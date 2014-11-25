@@ -1,0 +1,7 @@
+%h2 Email Templates
+
+- unless @datatable.collection.length > 0
+  %p
+    There are no email templates
+- else
+  = render_datatable @datatable

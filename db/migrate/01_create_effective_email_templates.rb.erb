@@ -1,0 +1,11 @@
+class CreateEffectiveEmailTemplates < ActiveRecord::Migration
+  def self.up
+    create_table <%= @email_templates_table_name %> do |t|
+      # Stuff
+    end
+  end
+
+  def self.down
+    drop_table <%= @email_templates_table_name %>
+  end
+end
