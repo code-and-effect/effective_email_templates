@@ -10,14 +10,15 @@ Gem::Specification.new do |s|
   s.authors     = ["Code and Effect"]
   s.email       = ["info@codeandeffect.com"]
   s.homepage    = "https://github.com/code-and-effect/effective_email_templates"
-  s.summary     = "Effective Email Templates"
-  s.description = "Description for Effective Email Templates"
+  s.summary     = "Effective Email Templates provides an admin access to modify email templates"
+  s.description = "Uses liquid templates"
+  s.licenses    = ['MIT']
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails"
-  s.add_dependency "coffee-rails"
-  s.add_dependency "haml"
-  s.add_dependency "migrant"
+  s.add_dependency "rails", ">= 3.2"
+  s.add_dependency "coffee-rails", ">= 3.2"
+  s.add_dependency "haml", ">= 3.0"
+  s.add_dependency "migrant", ">= 1.3"
 end
 
