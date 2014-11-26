@@ -1,7 +1,3 @@
 %h2 Email Templates
 
-- unless @datatable.collection.length > 0
-  %p
-    There are no email templates
-- else
-  = render_datatable @datatable
+= datatable_of('email templates', @datatable)

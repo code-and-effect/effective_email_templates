@@ -26,5 +26,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'factory_girl_rails'
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "effective_datatables", '0.3.17'
+  s.add_development_dependency "pry"
+  s.add_development_dependency "devise"
 end
 

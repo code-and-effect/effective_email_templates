@@ -3,7 +3,9 @@ require File.expand_path('../boot', __FILE__)
 require 'rails/all'
 
 Bundler.require(*Rails.groups)
-require "effective_email_templates"
+require 'effective_email_templates'
+require 'haml'
+require 'devise'
 
 module Dummy
   class Application < Rails::Application
