@@ -14,11 +14,17 @@ Gem::Specification.new do |s|
   s.description = "Uses liquid templates"
   s.licenses    = ['MIT']
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
+  s.files       = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
+  s.test_files  = Dir["spec/**/*"]
 
   s.add_dependency "rails", ">= 3.2"
   s.add_dependency "coffee-rails", ">= 3.2"
   s.add_dependency "haml", ">= 3.0"
   s.add_dependency "migrant", ">= 1.3"
+
+  s.add_development_dependency 'rspec-rails'
+  s.add_development_dependency 'factory_girl_rails'
+  s.add_development_dependency "sqlite3"
+  s.add_development_dependency "effective_datatables", '0.3.17'
 end
 
