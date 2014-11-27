@@ -15,7 +15,13 @@ module Effective
         errors.add :template, error.message
       end
     end
-    alias_method :template=, :precompile
 
+    def template=( text = nil )
+      raise Effective::RestrictedAttributeAccess, "Do not set the `template` attribute directly, set the `body` attribute and call `#precomple`."
+    end
+
+    def render( *args )
+      Marshal.load(template).render( *args )
+    end
   end
 end
