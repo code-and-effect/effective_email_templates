@@ -6,6 +6,7 @@ Bundler.require(*Rails.groups)
 require 'effective_email_templates'
 require 'haml'
 require 'devise'
+require 'liquid'
 
 module Dummy
   class Application < Rails::Application

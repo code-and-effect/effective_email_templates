@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "coffee-rails", ">= 3.2"
   s.add_dependency "haml", ">= 3.0"
   s.add_dependency "migrant", ">= 1.3"
+  s.add_dependency "liquid", ">= 3.0.0"
 
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'factory_girl_rails'
