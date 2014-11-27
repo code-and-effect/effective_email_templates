@@ -23,5 +23,14 @@ module Effective
     def render( *args )
       Marshal.load(template).render( *args )
     end
+
+    def deliver_to(address, render_options, options = {})
+      email_body = render( render_options )
+
+      options[:cc] = options.fetch(:cc, cc)
+      options[:bcc] = options.fetch(:bcc, bcc)
+
+      Effective::EmailTemplateMailer.templated_email(address, email_body, self, options).deliver
+    end
   end
 end

@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe Effective::EmailTemplate do
+
+  let(:recipient) { "recipient@example.com" }
+
   it 'stores a precompiled template' do
     email = build(:email_template)
     expect(email.template).to eq(nil)
@@ -25,5 +28,13 @@ describe Effective::EmailTemplate do
     expect {
       email.template = email.body
     }.to raise_exception(Effective::RestrictedAttributeAccess)
+  end
+
+  it 'handles delivery of itself' do
+    email = create(:email_template)
+    render_options = {}
+    expect {
+      email.deliver_to(recipient, render_options)
+    }.to change(ActionMailer::Base.deliveries, :length).by(1)
   end
 end
