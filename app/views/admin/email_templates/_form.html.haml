@@ -1,4 +1,4 @@
-= simple_form_for email_template do |f|
+= simple_form_for email_template, url: email_template_form_url(email_template) do |f|
   = f.input :from
   = f.input :cc
   = f.input :bcc

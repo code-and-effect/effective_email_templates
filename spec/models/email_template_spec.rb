@@ -2,11 +2,16 @@ require 'spec_helper'
 
 describe Effective::EmailTemplate do
   it 'stores a precompiled template' do
-    some_email = Effective::EmailTemplate.new(attributes_for(:email_template))
-    some_email.template.should be(nil)
+    email = build(:email_template)
+    email.template.should be(nil)
 
-    some_email.precompile
+    email.precompile
 
-    some_email.template.should_not be(nil)
+    email.template.should_not be(nil)
+  end
+
+  it 'loads a precompiled template' do
+    email = create(:email_template)
+    Marshal.load(email.template).should be_a(Liquid::Template)
   end
 end

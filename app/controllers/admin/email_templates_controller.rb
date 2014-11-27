@@ -12,23 +12,20 @@ module Admin
     end
 
     def show
+      @email_template = Effective::EmailTemplate.find(params[:id])
       EffectiveEmailTemplates.authorized?(self, :show, @email_template)
 
-      @email_template = Effective::EmailTemplate.find(params[:id])
       @page_title = "Show"
     end
 
     def new
-      EffectiveEmailTemplates.authorized?(self, :new, @email_template)
-
       @email_template = Effective::EmailTemplate.new
+      EffectiveEmailTemplates.authorized?(self, :new, @email_template)
     end
 
     def create
-      EffectiveEmailTemplates.authorized?(self, :create, @email_template)
-
       @email_template = Effective::EmailTemplate.new(email_template_params)
-      @email_template.precompile
+      EffectiveEmailTemplates.authorized?(self, :create, @email_template)
 
       if @email_template.save
         flash[:success] = "Email template created successfully"
@@ -39,10 +36,28 @@ module Admin
       end
     end
 
+    def edit
+      @email_template = Effective::EmailTemplate.find(params[:id])
+      EffectiveEmailTemplates.authorized?(self, :edit, @email_template)
+    end
+
+    def update
+      @email_template = Effective::EmailTemplate.find(params[:id])
+      EffectiveEmailTemplates.authorized?(self, :update, @email_template)
+
+      if @email_template.update(email_template_params)
+        flash[:success] = "Email template updated successfully"
+        redirect_to effective_email_templates.admin_email_templates_path
+      else
+        flash[:error] = "Could not update email template"
+        redirect_to effective_email_templates.edit_admin_email_template_path(@email_template)
+      end
+    end
+
     private
 
     def email_template_params
-      params.require(:email_template).permit([ :from, :cc, :bcc, :subject, :body ])
+      params.require(:effective_email_template).permit([ :from, :cc, :bcc, :subject, :body ])
     end
   end
 end
