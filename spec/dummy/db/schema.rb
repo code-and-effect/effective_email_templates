@@ -11,16 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141126222940) do
+ActiveRecord::Schema.define(version: 20141126222941) do
 
   create_table "email_templates", force: true do |t|
     t.string "subject",  null: false
     t.string "from",     null: false
     t.string "bcc"
     t.string "cc"
+    t.string "slug",     null: false
     t.text   "body",     null: false
     t.text   "template", null: false
   end
+
+  add_index "email_templates", ["slug"], name: "index_email_templates_on_slug"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

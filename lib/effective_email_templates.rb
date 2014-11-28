@@ -19,4 +19,8 @@ module EffectiveEmailTemplates
     true
   end
 
+  def self.get(slug)
+    Effective::EmailTemplate.find_by_slug(slug)
+  end
+
 end

@@ -5,9 +5,12 @@ class CreateEffectiveEmailTemplates < ActiveRecord::Migration
       t.string :from,     :null => false
       t.string :bcc
       t.string :cc
+      t.string :slug,     :null => false
       t.text :body,       :null => false
       t.text :template,   :null => false
     end
+
+    add_index <%= @email_templates_table_name %>, :slug
   end
 
   def self.down

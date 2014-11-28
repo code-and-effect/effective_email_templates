@@ -5,5 +5,7 @@ FactoryGirl.define do
     bcc       nil
     subject   "something important"
     body      "Hello World"
+
+    sequence(:slug) {|n| "unique_slug_#{n}" }
   end
 end

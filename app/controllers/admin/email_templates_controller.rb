@@ -57,7 +57,7 @@ module Admin
     private
 
     def email_template_params
-      params.require(:effective_email_template).permit([ :from, :cc, :bcc, :subject, :body ])
+      params.require(:effective_email_template).permit([ :from, :cc, :bcc, :subject, :body, :slug ])
     end
   end
 end

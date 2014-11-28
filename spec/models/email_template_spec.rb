@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe Effective::EmailTemplate do
 
-  let(:recipient) { "recipient@example.com" }
-
   it 'stores a precompiled template' do
     email = build(:email_template)
     expect(email.template).to eq(nil)
@@ -32,8 +30,10 @@ describe Effective::EmailTemplate do
 
   it 'prepares a mail object' do
     email = create(:email_template)
-    render_options = {}
-    expect( email.prepare(recipient, render_options) ).to be_a(Mail::Message)
+    options = {
+      to: "me@example.com"
+    }
+    expect( email.prepare(options) ).to be_a(Mail::Message)
   end
 end
 
