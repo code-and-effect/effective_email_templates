@@ -9,3 +9,4 @@ FactoryGirl.define do
     sequence(:slug) {|n| "unique_slug_#{n}" }
   end
 end
+

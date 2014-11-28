@@ -2,30 +2,25 @@ require 'spec_helper'
 
 describe Effective::EmailTemplate do
 
-  it 'stores a precompiled template' do
+  it 'stores a template after precompiling' do
     email = build(:email_template)
-    expect(email.template).to eq(nil)
+
+    # The initial template is an empty liquid template provided by the ::serialize method
+    expect(email.template.render).to be_blank
 
     email.precompile
 
-    expect(email.template).not_to be(nil)
+    expect(email.template.render).not_to be_blank
   end
 
-  it 'loads a precompiled template' do
+  it 'stores a precompiled template' do
     email = create(:email_template)
-    expect(Marshal.load(email.template)).to be_a(Liquid::Template)
+    expect(email.template).to be_a(Liquid::Template)
   end
 
   it 'knows how to render itself' do
     email = create(:email_template)
     expect(email.render).to be_a(String)
-  end
-
-  it 'raises an error if a user attempts to set the template attribute directly' do
-    email = build(:email_template)
-    expect {
-      email.template = email.body
-    }.to raise_exception(Effective::RestrictedAttributeAccess)
   end
 
   it 'prepares a mail object' do
