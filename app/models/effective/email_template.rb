@@ -1,4 +1,5 @@
 require 'liquid'
+Liquid::Template.error_mode = :strict # Raises a SyntaxError when invalid syntax is used
 
 module Effective
   class EmailTemplate < ActiveRecord::Base
