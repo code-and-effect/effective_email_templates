@@ -12,3 +12,4 @@ module Effective
     end
   end
 end
+

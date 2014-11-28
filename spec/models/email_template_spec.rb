@@ -30,11 +30,10 @@ describe Effective::EmailTemplate do
     }.to raise_exception(Effective::RestrictedAttributeAccess)
   end
 
-  it 'handles delivery of itself' do
+  it 'prepares a mail object' do
     email = create(:email_template)
     render_options = {}
-    expect {
-      email.deliver_to(recipient, render_options)
-    }.to change(ActionMailer::Base.deliveries, :length).by(1)
+    expect( email.prepare(recipient, render_options) ).to be_a(Mail::Message)
   end
 end
+
