@@ -31,8 +31,8 @@ module Admin
         flash[:success] = "Email template created successfully"
         redirect_to effective_email_templates.admin_email_templates_path
       else
-        flash[:error] = "Could not create email template"
-        redirect_to effective_email_templates.new_admin_email_template_path
+        flash.now[:error] = "Could not create email template"
+        render :new
       end
     end
 
@@ -49,8 +49,8 @@ module Admin
         flash[:success] = "Email template updated successfully"
         redirect_to effective_email_templates.admin_email_templates_path
       else
-        flash[:error] = "Could not update email template"
-        redirect_to effective_email_templates.edit_admin_email_template_path(@email_template)
+        flash.now[:error] = "Could not update email template"
+        render :edit
       end
     end
 

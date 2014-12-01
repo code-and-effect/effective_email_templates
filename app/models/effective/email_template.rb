@@ -7,7 +7,8 @@ module Effective
 
     serialize :template, Liquid::Template
 
-    validates :slug, uniqueness: true
+    validates :slug, uniqueness: true, presence: true
+    validates_format_of :slug, with: /\A([a-z]+_)*[a-z]+\z/, message: "Your slug must use lowercase letters and underscores only: an_example_slug"
     validates :body, presence: true
     validates :from, presence: true
     validates :subject, presence: true
