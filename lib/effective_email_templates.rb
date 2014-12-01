@@ -20,7 +20,7 @@ module EffectiveEmailTemplates
   end
 
   def self.get(slug)
-    Effective::EmailTemplate.find_by_slug(slug)
+    Effective::EmailTemplate.find_by_slug(slug) || Effective::EmailTemplate.new(slug: slug)
   end
 
 end
