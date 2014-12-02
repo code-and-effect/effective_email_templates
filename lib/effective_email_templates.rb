@@ -1,4 +1,6 @@
 require "effective_email_templates/engine"
+require "effective_email_templates/liquid_resolver"
+require "effective_email_templates/email_view_template"
 require "effective_email_templates/version"
 
 module EffectiveEmailTemplates
