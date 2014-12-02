@@ -6,7 +6,7 @@ FactoryGirl.define do
     subject   "something important"
     body      "Hello World"
 
-    sequence(:slug) {|n| "unique_slug_#{n}" }
+    sequence(:slug, 'a') {|n| "unique_slug_#{n}" }
   end
 end
 
