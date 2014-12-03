@@ -1,16 +1,30 @@
 require 'spec_helper'
 
 describe LiquidResolvedMailer do
-  let(:email_body) { 'liquid resolution!' }
-  let(:email_title) { :test_email }
 
-  before :each do
-    @template = create(:email_template, slug: email_title, body: email_body)
+  describe 'basic template resolution and rendering' do
+    before :each do
+      @email_body = 'liquid resolution!'
+      @template = create(:email_template, slug: 'test_email', body: @email_body)
+      @mail = LiquidResolvedMailer.test_email
+    end
+
+    it 'creates emails using a liquid template' do
+      expect(@mail.body.to_s).to eq(@email_body)
+    end
   end
 
-  it 'creates emails using a liquid template' do
-    mail = LiquidResolvedMailer.send(email_title)
-    expect(mail.body.to_s).to eq(email_body)
+  describe 'embedded template resolution and rendering' do
+    before :each do
+      @email_body = 'liquid {{ noun }}!'
+      @renderred_body = 'liquid resolution!'
+      @template = create(:email_template, slug: 'test_email', body: @email_body)
+      @mail = LiquidResolvedMailer.test_email
+    end
+
+    it 'correctly renders emails using an embedded liquid template' do
+      expect(@mail.body.to_s).to eq(@renderred_body)
+    end
   end
 end
 
