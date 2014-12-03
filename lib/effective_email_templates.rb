@@ -3,6 +3,8 @@ require "effective_email_templates/liquid_resolver"
 require "effective_email_templates/email_view_template"
 require "effective_email_templates/version"
 
+ActionMailer::Base.send(:append_view_path, EffectiveEmailTemplates::LiquidResolver.new)
+
 module EffectiveEmailTemplates
 
   mattr_accessor :email_templates_table_name
@@ -26,3 +28,4 @@ module EffectiveEmailTemplates
   end
 
 end
+
