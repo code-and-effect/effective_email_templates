@@ -117,10 +117,22 @@ MIT License.  Copyright Code and Effect Inc. http://www.codeandeffect.com
 
 You are not granted rights or licenses to the trademarks of Code and Effect
 
+## TODO
+
+- minimize gem dependencies
+- remove unused non-admin routes and config option
+- remove `caller` usage from Effective::LiquidMailer (or remove requirement for Ruby 2.0+)
+- add `EffectiveEmailTemplates::present?` to check if a template model is present
+- configurable default from address
+- configurable prefix for subject line
+- use autoload rather than require
+- research panoramic gem's usage of the Resolver class and improve our Resolver usage
+- enable multipart emails
+- enable file attachments
+- import factories/fixtures in install task
 
 ## Testing
 
-The test suite for this gem is unfortunately not yet complete.
 
 
 
