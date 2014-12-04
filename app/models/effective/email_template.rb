@@ -23,18 +23,17 @@ module Effective
       end
     end
 
-    def render( *args )
-      template.render( *args )
+    def mail_options
+      {
+        from: from,
+        subject: subject,
+        cc: cc,
+        bcc: bcc
+      }
     end
 
-    def prepare(options = {})
-      liquid_options = options.stringify_keys   # Liquid doesn't accept symbol keys
-      email_body = render( liquid_options )
-
-      options[:cc] = options.fetch(:cc, cc)
-      options[:bcc] = options.fetch(:bcc, bcc)
-
-      Effective::EmailTemplateMailer.templated_email(options[:to], email_body, self, options)
+    def render( *args )
+      template.render( *args )
     end
   end
 end

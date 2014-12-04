@@ -9,12 +9,7 @@ class User < ActiveRecord::Base
   private
 
   def after_create
-    template = EffectiveEmailTemplates.get(:after_create_user)
-
-    if template.valid?
-      render_options = {}
-      mail = template.prepare({ to: 'some_admin@example.com' })
-      mail.deliver
-    end
+    mail = UserLiquidMailer.after_create_user
+    mail.deliver
   end
 end

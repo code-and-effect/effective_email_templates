@@ -22,13 +22,5 @@ describe Effective::EmailTemplate do
     email = create(:email_template)
     expect(email.render).to be_a(String)
   end
-
-  it 'prepares a mail object' do
-    email = create(:email_template)
-    options = {
-      to: "me@example.com"
-    }
-    expect( email.prepare(options) ).to be_a(Mail::Message)
-  end
 end
 

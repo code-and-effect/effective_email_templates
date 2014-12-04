@@ -11,7 +11,8 @@ module EffectiveEmailTemplates
       # The view object here is an anonymous view object (it has a class
       # of Class). It has all of the view helper methods inside of it.
       render_options = extract_render_options(view.assigns)
-      effective_email_template.render(render_options)
+      rendered = effective_email_template.render(render_options)
+      rendered
     end
 
     def formats
