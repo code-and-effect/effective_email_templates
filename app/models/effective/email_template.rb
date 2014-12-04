@@ -10,8 +10,6 @@ module Effective
     validates :slug, uniqueness: true, presence: true
     validates_format_of :slug, with: /\A([a-z]+_)*[a-z]+\z/, message: "must contain only lowercase letters and underscores (for example: an_example_slug)"
     validates :body, presence: true
-    validates :from, presence: true
-    validates :subject, presence: true
 
     after_validation :precompile
 
@@ -29,7 +27,7 @@ module Effective
         subject: subject,
         cc: cc,
         bcc: bcc
-      }
+      }.delete_if { |_, v| v.blank? }
     end
 
     def render( *args )

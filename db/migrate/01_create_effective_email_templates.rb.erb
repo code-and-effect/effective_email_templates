@@ -1,8 +1,8 @@
 class CreateEffectiveEmailTemplates < ActiveRecord::Migration
   def self.up
     create_table <%= @email_templates_table_name %> do |t|
-      t.string :subject,  :null => false
-      t.string :from,     :null => false
+      t.string :subject
+      t.string :from
       t.string :bcc
       t.string :cc
       t.string :slug,     :null => false
