@@ -121,8 +121,11 @@ You are not granted rights or licenses to the trademarks of Code and Effect
 
 - minimize gem dependencies
 - remove unused non-admin routes and config option
+- Add an admin alert if there are mailer methods that do not have associated email templates
+- Show admin what the available arguments are for each template
 - remove `caller` usage from Effective::LiquidMailer (or remove requirement for Ruby 2.0+)
 - add `EffectiveEmailTemplates::present?` to check if a template model is present
+  - notify the app but don't raise an error if template is not present when an email is sent
 - configurable default from address
 - configurable prefix for subject line
 - use autoload rather than require
