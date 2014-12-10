@@ -15,6 +15,6 @@
   %li
     Body:
     %br
-    = @email_template.body
+    = simple_format( @email_template.body )
 = link_to( "Edit", effective_email_templates.edit_admin_email_template_path( id: @email_template.id ) )
 
