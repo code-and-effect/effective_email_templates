@@ -7,11 +7,11 @@ module Effective
       mail_method = caller_locations(1,1)[0].label
       begin
         email_template = EffectiveEmailTemplates.get(mail_method)
+        headers = headers.merge(email_template.mail_options)
+        super(headers, &block)
       rescue Effective::MissingDbTemplate => e
         # WIP: write to log? send flash message to unknown page/user? write to effective_logger? configurable? configure to re-raise error?
       end
-      headers = headers.merge(email_template.mail_options)
-      super(headers, &block)
     end
   end
 end
