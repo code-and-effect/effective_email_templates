@@ -11,13 +11,6 @@ module Admin
       @page_title = 'Email Templates'
     end
 
-    def show
-      @email_template = Effective::EmailTemplate.find(params[:id])
-      EffectiveEmailTemplates.authorized?(self, :show, @email_template)
-
-      @page_title = "Show"
-    end
-
     def new
       @email_template = Effective::EmailTemplate.new
       EffectiveEmailTemplates.authorized?(self, :new, @email_template)
