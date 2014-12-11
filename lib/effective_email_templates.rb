@@ -4,7 +4,6 @@ require "effective_email_templates/email_view_template"
 require "effective_email_templates/version"
 
 require "effective/liquid_mailer"
-Effective::LiquidMailer.send(:append_view_path, EffectiveEmailTemplates::LiquidResolver.new)
 
 module EffectiveEmailTemplates
 
