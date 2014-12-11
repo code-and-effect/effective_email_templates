@@ -4,6 +4,7 @@ require "effective_email_templates/email_view_template"
 require "effective_email_templates/version"
 
 require "effective/liquid_mailer"
+require "effective/missing_db_template"
 
 module EffectiveEmailTemplates
 
@@ -24,7 +25,7 @@ module EffectiveEmailTemplates
   end
 
   def self.get(slug)
-    Effective::EmailTemplate.find_by_slug(slug) || Effective::EmailTemplate.new(slug: slug)
+    Effective::EmailTemplate.find_by_slug(slug) || raise(Effective::MissingDbTemplate, "Could not find template with slug: #{slug}")
   end
 
 end

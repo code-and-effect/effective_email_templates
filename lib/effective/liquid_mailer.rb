@@ -5,7 +5,11 @@ module Effective
     def mail(headers = {}, &block)
       # this be dangerous and requires ruby 2.0+
       mail_method = caller_locations(1,1)[0].label
-      email_template = EffectiveEmailTemplates.get(mail_method)
+      begin
+        email_template = EffectiveEmailTemplates.get(mail_method)
+      rescue Effective::MissingDbTemplate => e
+        # WIP: write to log? send flash message to unknown page/user? write to effective_logger? configurable? configure to re-raise error?
+      end
       headers = headers.merge(email_template.mail_options)
       super(headers, &block)
     end
