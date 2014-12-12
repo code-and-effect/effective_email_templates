@@ -34,13 +34,6 @@ describe Admin::EmailTemplatesController do
         @email_template = create(:email_template)
       end
 
-      describe "#show" do
-        it 'opens' do
-          get :show, :id => @email_template.id, :use_route => :effective_email_templates
-          expect(response.status).to eq 200
-        end
-      end
-
       describe "#edit" do
         it 'opens' do
           get :edit, :id => @email_template.id, :use_route => :effective_email_templates
