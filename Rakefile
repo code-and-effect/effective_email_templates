@@ -6,7 +6,7 @@ rescue LoadError
 end
 
 # Our tasks
-load 'lib/tasks/effective_email_templates_tasks.rake'
+load 'lib/tasks/effective_email_templates/import_default_views.rake'
 
 # Testing tasks
 APP_RAKEFILE = File.expand_path("../spec/dummy/Rakefile", __FILE__)
