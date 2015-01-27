@@ -7,13 +7,17 @@ module Effective
 
     serialize :template, Liquid::Template
 
-    validates :slug, uniqueness: true, presence: true
     validates_format_of :slug, with: /\A([a-z]+_)*[a-z]+\z/, message: "must contain only lowercase letters and underscores (for example: an_example_slug)"
-    validates :body, presence: true
+    validates :slug,      presence: true, uniqueness: true
+    validates :body,      presence: true
+    validates :subject,   presence: true
+    validates :from,      presence: true
+    validates :template,  presence: true
 
     after_validation :precompile
 
     def precompile
+      return unless body_changed?
       begin
         self.template = Liquid::Template.parse( body )
       rescue Liquid::SyntaxError => error

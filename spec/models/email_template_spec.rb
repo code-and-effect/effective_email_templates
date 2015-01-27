@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe Effective::EmailTemplate do
+  before :each do
+    @email = create(:email_template)
+  end
+
+  it 'should be persisted' do
+    expect(@email.persisted?).to be(true)
+  end
 
   it 'stores a template after precompiling' do
     email = build(:email_template)
@@ -14,13 +21,24 @@ describe Effective::EmailTemplate do
   end
 
   it 'stores a precompiled template' do
-    email = create(:email_template)
-    expect(email.template).to be_a(Liquid::Template)
+    expect(@email.template).to be_a(Liquid::Template)
   end
 
   it 'knows how to render itself' do
-    email = create(:email_template)
-    expect(email.render).to be_a(String)
+    expect(@email.render).to be_a(String)
+  end
+
+  it 'does not precompile if the body has not changed' do
+    @email.from = 'other@example.com'
+    expect(Liquid::Template).to_not receive(:parse).with(@email.body)
+    @email.save
+  end
+
+  it 'does precompile if the body has changed' do
+    @email.body = 'Hello World -- changed'
+    parsed_template = Liquid::Template.parse(@email.body)
+    expect(Liquid::Template).to receive(:parse).with(@email.body).and_return(parsed_template)
+    @email.save
   end
 end
 
