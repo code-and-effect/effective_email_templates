@@ -4,16 +4,16 @@ class TemplateImporter
   end
 
   def invoke
-    liquid_templates_finder = Rails.root.join('app', 'views', '*_liquid')
-    Dir[liquid_templates_finder].each do |liquid_templates_directory|
-      Dir[File.join(liquid_templates_directory, '*.liquid')].each do |liquid_template_filepath|
-        template = Effective::EmailTemplate.new()
-        template.slug = File.basename(liquid_template_filepath, '.liquid')
-        file = File.new(liquid_template_filepath, "r")
-        template = add_template_meta(file, template)
-        template.body = extract_template_body(file)
-        template.save
-      end
+    Dir[Rails.root.join('app', 'views', '**', '*.liquid')].each do |liquid_template_filepath|
+      slug = File.basename(liquid_template_filepath, '.liquid')
+      return if Effective::EmailTemplate.where(slug: slug).present?
+
+      template = Effective::EmailTemplate.new(slug: slug)
+
+      file = File.new(liquid_template_filepath, "r")
+      template = add_template_meta(file, template)
+      template.body = extract_template_body(file)
+      template.save
     end
   end
 
