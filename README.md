@@ -83,10 +83,9 @@ This task can be run even when no new templates have been added and will not ove
 database templates.  This allows you to run the rake task in a deploy script:
 
 ```ruby
-# some deploy script
+# an example Heroku deploy script
 ...
-Rake::Task["build"].execute  # if you've already run the :environment dependency task
-Rake::Task["build"].invoke   # if you haven't already run the :environment dependency task
+system 'heroku run rake effective_email_templates:import_default_views'
 ...
 ```
 
