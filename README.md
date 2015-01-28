@@ -59,7 +59,38 @@ mail = UserLiquidMailer.after_create_user(self)
 mail.deliver
 ```
 
-# Authorization
+### Default Templates
+
+Email templates can still be added by a developer into a view file if a rake task is run to import
+them into the database in production.  To create a view template for the `after_create_user` email
+above, simply create a template file inside /app/views (probably in the user_liquid directory)
+with a .liquid file extension.  That file should contain metadata in YAML format at the top
+surrounded by two lines with three hyphens:
+
+```yaml
+---
+subject: 'Hello User'                   # REQUIRED
+from: 'effective@email_templates.com'   # REQUIRED
+cc: 'my_friend@email_templates.com'     # optional
+bcc: 'my_secret_friend@example.com'     # optional
+---
+Hello new user! I'm a liquid template and you can use {{ }} inside of me to interpolate variables
+defined in the corresponding LiquidMailer method.
+```
+
+To add these templates to the database, run the `effective_email_templates:import_default_views` task.
+This task can be run even when no new templates have been added and will not overwrite existing
+database templates.  This allows you to run the rake task in a deploy script:
+
+```ruby
+# some deploy script
+...
+Rake::Task["build"].execute  # if you've already run the :environment dependency task
+Rake::Task["build"].invoke   # if you haven't already run the :environment dependency task
+...
+```
+
+## Authorization
 
 All authorization checks are handled via the config.authorization_method found in the config/initializers/ file.
 
