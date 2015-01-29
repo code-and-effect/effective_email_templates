@@ -14,10 +14,9 @@ module Effective
     validates :from,      presence: true
     validates :template,  presence: true
 
-    before_validation :precompile
+    before_validation :try_precompile
 
     def precompile
-      return unless body_changed?
       begin
         self.template = Liquid::Template.parse( body )
       rescue Liquid::SyntaxError => error
@@ -36,6 +35,12 @@ module Effective
 
     def render( *args )
       template.render( *args )
+    end
+
+  private
+
+    def try_precompile
+      precompile if body_changed?
     end
   end
 end
