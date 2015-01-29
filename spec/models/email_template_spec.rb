@@ -9,6 +9,11 @@ describe Effective::EmailTemplate do
     expect(@email.persisted?).to be(true)
   end
 
+  it 'can be valid without a template explicitly stored' do
+    email = build(:email_template, template: nil)
+    expect(email).to be_valid
+  end
+
   it 'stores a template after precompiling' do
     email = build(:email_template)
 

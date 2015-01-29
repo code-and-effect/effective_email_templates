@@ -14,7 +14,7 @@ module Effective
     validates :from,      presence: true
     validates :template,  presence: true
 
-    after_validation :precompile
+    before_validation :precompile
 
     def precompile
       return unless body_changed?
