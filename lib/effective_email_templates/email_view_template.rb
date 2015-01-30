@@ -10,9 +10,7 @@ module EffectiveEmailTemplates
     def render(view, locals, buffer=nil, &block)
       # The view object here is an anonymous view object (it has a class
       # of Class). It has all of the view helper methods inside of it.
-      render_options = extract_render_options(view.assigns)
-      rendered = effective_email_template.render(render_options)
-      rendered
+      effective_email_template.render(view.assigns['to_liquid'])
     end
 
     def formats
@@ -25,14 +23,6 @@ module EffectiveEmailTemplates
 
     def type
       formats.first
-    end
-
-  private
-
-    def extract_render_options(assigns)
-      assigns.select do |k,v|
-        k.is_a?( String ) && !( k.match(/\A_/) )
-      end
     end
   end
 end
