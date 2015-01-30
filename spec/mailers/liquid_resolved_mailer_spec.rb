@@ -15,14 +15,23 @@ describe LiquidResolvedMailer do
   end
 
   describe 'embedded template resolution and rendering' do
-    before :each do
+    it 'correctly renders emails using an embedded liquid template' do
       @email_body = 'liquid {{ noun }}!'
       @renderred_body = 'liquid resolution!'
       @template = create(:email_template, slug: 'test_email', body: @email_body)
       @mail = LiquidResolvedMailer.test_email
+      expect(@mail.body.to_s).to eq(@renderred_body)
     end
 
-    it 'correctly renders emails using an embedded liquid template' do
+    it 'renders emails with nested variables' do
+      @email_body = 'liquid {{ noun.for_the_new_year }}!'
+      @renderred_body = 'liquid resolution!'
+      @template = create(:email_template, slug: 'test_email', body: @email_body)
+      @mail = LiquidResolvedMailer.test_email({
+        'noun' => {
+          'for_the_new_year' => 'resolution'
+        }
+      })
       expect(@mail.body.to_s).to eq(@renderred_body)
     end
   end

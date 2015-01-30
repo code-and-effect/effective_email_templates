@@ -42,17 +42,29 @@ rake db:migrate
   - Mailer objects need to inherit from `Effective::LiquidMailer`
   - Mailer methods and email template slugs need to match up
   - Email headers can be declared in the #mail method but can be overrided by the saved attributes on the Effective::EmailTemplate model.
+- Create mail objects and deliver them like normal
+
+An example liquid template (put these into the database through the admin panel: `/admin/email_templates`):
+
+```liquid
+Welcome to our site.  We think you're {{ adjective }}
+```
+
+The corresponding Mailer:
 
 ```ruby
 # app/mailers/user_liquid_mailer.rb
 class UserLiquidMailer < Effective::LiquidMailer
   def after_create_user(user)
+    @to_liquid = {
+      'adjective' => 'awesome'
+    }
     mail(to: user.email)
   end
 end
 ```
 
-- Create mail objects and deliver them like normal
+Send the emails like normal:
 
 ```ruby
 mail = UserLiquidMailer.after_create_user(self)
