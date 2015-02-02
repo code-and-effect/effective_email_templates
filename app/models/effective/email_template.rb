@@ -3,11 +3,12 @@ Liquid::Template.error_mode = :strict # Raises a SyntaxError when invalid syntax
 
 module Effective
   class EmailTemplate < ActiveRecord::Base
+
     self.table_name = EffectiveEmailTemplates.email_templates_table_name.to_s
 
     serialize :template, Liquid::Template
 
-    validates_format_of :slug, with: /\A([a-z]+_)*[a-z]+\z/, message: "must contain only lowercase letters and underscores (for example: an_example_slug)"
+    validate :slug_needs_to_have_simple_format
     validates :slug,      presence: true, uniqueness: true
     validates :body,      presence: true
     validates :subject,   presence: true
@@ -41,6 +42,14 @@ module Effective
 
     def try_precompile
       precompile if body_changed?
+    end
+
+    def slug_needs_to_have_simple_format
+      # convert slug to symbol
+      # add error if symbol has non-simple format (i.e. `:"symbol with spaces"` vs `:symbol_with_underscores`)
+      if /[@$"]/ =~ slug.to_sym.inspect || slug.match(/[A-Z]/)
+        errors.add(:slug, 'must have a simple format with no spaces, capital letters, and most punctuation (good: "hello_world", bad: "hello, world")')
+      end
     end
   end
 end

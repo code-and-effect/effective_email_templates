@@ -5,6 +5,18 @@ describe Effective::EmailTemplate do
     @email = create(:email_template)
   end
 
+  describe 'slug' do
+    it 'can have numbers in the slug' do
+      email = build(:email_template, slug: 'reminder_30_days')
+      expect(email).to be_valid
+    end
+
+    it 'cannot have spaces in the slug' do
+      email = build(:email_template, slug: 'reminder 30 days')
+      expect(email).to_not be_valid
+    end
+  end
+
   it 'should be persisted' do
     expect(@email.persisted?).to be(true)
   end
