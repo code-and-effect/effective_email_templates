@@ -7,7 +7,7 @@ module EffectiveEmailTemplates
     def invoke
       Dir[Rails.root.join('app', 'views', '**', '*.liquid')].each do |liquid_template_filepath|
         slug = File.basename(liquid_template_filepath, '.liquid')
-        return if Effective::EmailTemplate.where(slug: slug).present?
+        next if Effective::EmailTemplate.where(slug: slug).present?
 
         template = Effective::EmailTemplate.new(slug: slug)
 
