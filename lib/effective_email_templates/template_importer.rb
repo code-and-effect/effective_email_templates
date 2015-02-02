@@ -15,10 +15,11 @@ module EffectiveEmailTemplates
         template = add_template_meta(file, template)
         template.body = extract_template_body(file)
         template.save
+        print_errors(template, liquid_template_filepath)
       end
     end
 
-    private
+  private
 
     def add_template_meta(file, template)
       template.attributes = File.open(file) do |f|
@@ -31,6 +32,16 @@ module EffectiveEmailTemplates
       contents = file.read
       return unless match = contents.match(/(---+(.|\n)+---+)/)
       contents.gsub(match[1], '').strip
+    end
+
+    def print_errors(template, liquid_template_filepath)
+      if template.errors
+        puts "ERROR -- There was one or more validation errors while uploading:"
+        puts "  Email Template: #{liquid_template_filepath}"
+        template.errors.each do |attribute, error|
+          puts "  -> #{attribute} #{error}"
+        end
+      end
     end
   end
 end
