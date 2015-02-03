@@ -7,6 +7,7 @@ module Admin
     def index
       EffectiveEmailTemplates.authorized?(self, :index, Effective::EmailTemplate)
 
+      @page_title = 'Manage Email Templates'
       @datatable = Effective::Datatables::EmailTemplates.new() if defined?(EffectiveDatatables)
       @page_title = 'Email Templates'
     end
@@ -14,6 +15,8 @@ module Admin
     def new
       @email_template = Effective::EmailTemplate.new
       EffectiveEmailTemplates.authorized?(self, :new, @email_template)
+
+      @page_title = 'New Email Template'
     end
 
     def create
@@ -25,6 +28,7 @@ module Admin
         redirect_to effective_email_templates.admin_email_templates_path
       else
         flash.now[:error] = "Could not create email template"
+        @page_title = 'New Email Template'
         render :new
       end
     end
@@ -32,6 +36,8 @@ module Admin
     def edit
       @email_template = Effective::EmailTemplate.find(params[:id])
       EffectiveEmailTemplates.authorized?(self, :edit, @email_template)
+
+      @page_title = 'Edit Email Template'
     end
 
     def update
@@ -43,6 +49,7 @@ module Admin
         redirect_to effective_email_templates.admin_email_templates_path
       else
         flash.now[:error] = "Could not update email template"
+        @page_title = 'Edit Email Template'
         render :edit
       end
     end
