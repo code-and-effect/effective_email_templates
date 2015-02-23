@@ -1,7 +1,7 @@
 module EffectiveEmailTemplates
   class TemplateImporter
-    def self.invoke
-      new.invoke
+    def self.invoke(importer = new)
+      importer.invoke
     end
 
     def invoke
@@ -15,7 +15,7 @@ module EffectiveEmailTemplates
         template = add_template_meta(file, template)
         template.body = extract_template_body(file)
         template.save
-        print_errors(template, liquid_template_filepath)
+        print_errors(template, liquid_template_filepath) unless template.valid?
       end
     end
 
@@ -23,7 +23,8 @@ module EffectiveEmailTemplates
 
     def add_template_meta(file, template)
       template.attributes = File.open(file) do |f|
-        YAML::load(f)
+        attr = YAML::load(f)
+        attr.is_a?(Hash) ? attr : {}
       end
       template
     end
@@ -35,12 +36,10 @@ module EffectiveEmailTemplates
     end
 
     def print_errors(template, liquid_template_filepath)
-      if template.errors
-        puts "ERROR -- There was one or more validation errors while uploading:"
-        puts "  Email Template: #{liquid_template_filepath}"
-        template.errors.each do |attribute, error|
-          puts "  -> #{attribute} #{error}"
-        end
+      puts "ERROR -- There was one or more validation errors while uploading:"
+      puts "  Email Template: #{liquid_template_filepath}"
+      template.errors.each do |attribute, error|
+        puts "  -> #{attribute} #{error}"
       end
     end
   end
