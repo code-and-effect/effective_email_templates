@@ -17,4 +17,3 @@ module EffectiveEmailTemplatesHelper
     end
   end
 end
-

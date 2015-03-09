@@ -5,7 +5,7 @@ end
 EffectiveEmailTemplates::Engine.routes.draw do
   if defined?(EffectiveDatatables)
     namespace :admin do
-      resources :email_templates, only: [:index, :new, :create, :edit, :update]
+      resources :email_templates, only: [:index, :edit, :update]
     end
   end
 end

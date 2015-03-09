@@ -2,7 +2,7 @@ if defined?(EffectiveDatatables)
   module Effective
     module Datatables
       class EmailTemplates < Effective::Datatable
-        default_order :id, :desc
+        default_order :subject, :asc
 
         table_column :id, visible: false
         table_column :slug

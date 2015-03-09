@@ -36,4 +36,3 @@ describe LiquidResolvedMailer do
     end
   end
 end
-
