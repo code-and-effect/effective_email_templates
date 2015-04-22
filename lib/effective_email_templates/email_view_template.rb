@@ -10,6 +10,16 @@ module EffectiveEmailTemplates
     def render(view, locals, buffer=nil, &block)
       # The view object here is an anonymous view object (it has a class
       # of Class). It has all of the view helper methods inside of it.
+
+      if view.assigns['email_body']
+        effective_email_template.body = view.assigns['email_body']
+        effective_email_template.precompile
+
+        if effective_email_template.errors[:template].present?
+          raise "Email body error: #{effective_email_template.errors[:template].join('')}"
+        end
+      end
+
       effective_email_template.render(view.assigns['to_liquid'])
     end
 
