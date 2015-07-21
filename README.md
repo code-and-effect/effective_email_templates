@@ -1,8 +1,11 @@
+
 # Effective Email Templates
 
-Description!!
+Create email templates that an admin or any user can safely edit (you're protected from SQL injection and other nastiness).
+Effective Email Templates relies on [Liquid templates](http://liquidmarkup.org/) built by Shopify to profide this safety.
 
 Rails 3.2.x and Rails 4 Support
+
 
 ## Getting Started
 
@@ -35,27 +38,52 @@ rake db:migrate
 ```
 
 
-## Usage
+## Creating Email Templates
 
-- Create some email templates at `/admin/email_templates`
-- Create a mailer method for each email
+This is very similar to creating other emails in Rails.
+
+1. Create a new mailer object (i.e. `/app/mailers/template_mailer.rb`)
   - Mailer objects need to inherit from `Effective::LiquidMailer`
-  - Mailer methods and email template slugs need to match up
-  - Email headers can be declared in the #mail method but can be overrided by the saved attributes on the Effective::EmailTemplate model.
-- Create mail objects and deliver them like normal
+2. Create a method inside the mailer object based on the name of your email (i.e. `def welcome_email`)
+3. Create a default email template file (i.e. `/app/views/template_mailer/welcome_email.liquid`)
+  - Start out with a plain text email (without any variables and we'll show you how to add dynamic content below)
+  - Add the email subject and from address at the top of the email. For example:
 
-An example liquid template (put these into the database through the admin panel: `/admin/email_templates`):
+```yaml
+---
+subject: 'Hello User'                   # REQUIRED
+from: 'effective@email_templates.com'   # REQUIRED
+cc: 'my_friend@email_templates.com'     # optional
+bcc: 'my_secret_friend@example.com'     # optional
+---
+Hello new user! I'm a liquid template that will be editable to site admins and/or users.
+```
+
+4. Run this rake task to import this email template from the filesystem to the database (where it will be editable)
+  - Remember to do this in your staging and production environments as well!
+  - This task can be run even when no new templates have been added and will not overwrite existing
+    database templates.  This allows you to run the rake task in a deploy script if you are adding new
+    templates frequently.
+
+```console
+rake effective_email_templates:import_default_views
+```
+
+5. Visit `localhost:3000/admin/email_templates` in your browser to edit templates.
+
+
+## Making Content Dynamic
 
 ```liquid
-Welcome to our site.  We think you're {{ adjective }}
+Welcome to our site.  We think you're {{ adjective }}!
 ```
 
 The corresponding Mailer:
 
 ```ruby
-# app/mailers/user_liquid_mailer.rb
-class UserLiquidMailer < Effective::LiquidMailer
-  def after_create_user(user)
+# app/mailers/template_mailer.rb
+class TemplateMailer < Effective::LiquidMailer
+  def welcome_email(user)
     @to_liquid = {
       'adjective' => 'awesome'
     }
@@ -67,39 +95,10 @@ end
 Send the emails like normal:
 
 ```ruby
-mail = UserLiquidMailer.after_create_user(self)
+mail = TemplateMailer.welcome_email(user)
 mail.deliver
 ```
 
-### Default Templates
-
-Email templates can still be added by a developer into a view file if a rake task is run to import
-them into the database in production.  To create a view template for the `after_create_user` email
-above, simply create a template file inside /app/views (probably in the user_liquid directory)
-with a .liquid file extension.  That file should contain metadata in YAML format at the top
-surrounded by two lines with three hyphens:
-
-```yaml
----
-subject: 'Hello User'                   # REQUIRED
-from: 'effective@email_templates.com'   # REQUIRED
-cc: 'my_friend@email_templates.com'     # optional
-bcc: 'my_secret_friend@example.com'     # optional
----
-Hello new user! I'm a liquid template and you can use {{ }} inside of me to interpolate variables
-defined in the corresponding LiquidMailer method.
-```
-
-To add these templates to the database, run the `effective_email_templates:import_default_views` task.
-This task can be run even when no new templates have been added and will not overwrite existing
-database templates.  This allows you to run the rake task in a deploy script:
-
-```ruby
-# an example Heroku deploy script
-...
-system 'heroku run rake effective_email_templates:import_default_views'
-...
-```
 
 ## Authorization
 
@@ -177,19 +176,4 @@ You are not granted rights or licenses to the trademarks of Code and Effect
 - import factories/fixtures in install task
 
 ## Testing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
