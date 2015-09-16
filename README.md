@@ -68,14 +68,14 @@ This is very similar to creating other emails in Rails.
       templates frequently.
 
     ```console
-    rake effective_email_templates:import_default_views
+    rake effective_email_templates:import_templates
     ```
 
 5. Visit `localhost:3000/admin/email_templates` in your browser to edit templates.
 
 6. Run this rake task to overwrite to initial state default database email templates that have already been changed. This will touch email templates created only from filesystem.
     ```console
-    rake effective_email_templates:regenerate_default_views
+    rake effective_email_templates:overwrite_templates
     ```
 
 
