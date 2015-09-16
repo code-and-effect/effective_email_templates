@@ -6,6 +6,14 @@ namespace :effective_email_templates do
 
   desc 'Overwrite existing default database email templates from the filesystem.'
   task regenerate_default_views: :environment do
-    EffectiveEmailTemplates::TemplateImporter.invoke(overwrite: true)
+    puts 'By running this task, all email templates that exist in the database will be overwritten by the templates in the filesystem. Do you still want to run this task? (Y/n): '
+    answer = $stdin.gets.chomp
+
+    if answer.downcase == 'y'
+      EffectiveEmailTemplates::TemplateImporter.invoke(overwrite: true)
+      puts 'Default email templates have been overwritten successfully!'
+    else
+      puts 'Cancelled!'
+    end
   end
 end
