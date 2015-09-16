@@ -43,33 +43,40 @@ rake db:migrate
 This is very similar to creating other emails in Rails.
 
 1. Create a new mailer object (i.e. `/app/mailers/template_mailer.rb`)
-  - Mailer objects need to inherit from `Effective::LiquidMailer`
+    - Mailer objects need to inherit from `Effective::LiquidMailer`
+    
 2. Create a method inside the mailer object based on the name of your email (i.e. `def welcome_email`)
-3. Create a default email template file (i.e. `/app/views/template_mailer/welcome_email.liquid`)
-  - Start out with a plain text email (without any variables and we'll show you how to add dynamic content below)
-  - Add the email subject and from address at the top of the email. For example:
 
-```yaml
----
-subject: 'Hello User'                   # REQUIRED
-from: 'effective@email_templates.com'   # REQUIRED
-cc: 'my_friend@email_templates.com'     # optional
-bcc: 'my_secret_friend@example.com'     # optional
----
-Hello new user! I'm a liquid template that will be editable to site admins and/or users.
-```
+3. Create a default email template file (i.e. `/app/views/template_mailer/welcome_email.liquid`)
+    - Start out with a plain text email (without any variables and we'll show you how to add dynamic content below)
+    - Add the email subject and from address at the top of the email. For example:
+
+    ```yaml
+    ---
+    subject: 'Hello User'                   # REQUIRED
+    from: 'effective@email_templates.com'   # REQUIRED
+    cc: 'my_friend@email_templates.com'     # optional
+    bcc: 'my_secret_friend@example.com'     # optional
+    ---
+    Hello new user! I'm a liquid template that will be editable to site admins and/or users.
+    ```
 
 4. Run this rake task to import this email template from the filesystem to the database (where it will be editable)
-  - Remember to do this in your staging and production environments as well!
-  - This task can be run even when no new templates have been added and will not overwrite existing
-    database templates.  This allows you to run the rake task in a deploy script if you are adding new
-    templates frequently.
+    - Remember to do this in your staging and production environments as well!
+    - This task can be run even when no new templates have been added and will not overwrite existing
+      database templates.  This allows you to run the rake task in a deploy script if you are adding new
+      templates frequently.
 
-```console
-rake effective_email_templates:import_default_views
-```
+    ```console
+    rake effective_email_templates:import_templates
+    ```
 
 5. Visit `localhost:3000/admin/email_templates` in your browser to edit templates.
+
+6. Run this rake task to overwrite to initial state default database email templates that have already been changed. This will touch email templates created only from filesystem.
+    ```console
+    rake effective_email_templates:overwrite_templates
+    ```
 
 
 ## Making Content Dynamic
