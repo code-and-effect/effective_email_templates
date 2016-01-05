@@ -1,7 +1,7 @@
 $:.push File.expand_path("../lib", __FILE__)
 
 # Maintain your gem's version:
-require "effective_email_templates/version"
+require 'effective_email_templates/version'
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
