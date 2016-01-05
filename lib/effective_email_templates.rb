@@ -10,6 +10,7 @@ Effective::LiquidMailer.send(:append_view_path, EffectiveEmailTemplates::LiquidR
 module EffectiveEmailTemplates
 
   mattr_accessor :email_templates_table_name
+  mattr_accessor :allow_variables_in_email_subject
   mattr_accessor :authorization_method
   mattr_accessor :simple_form_options
   mattr_accessor :layout

@@ -2,11 +2,14 @@ module Effective
   class LiquidMailer < ::ActionMailer::Base
     def mail(headers = {}, &block)
       # this be dangerous and requires ruby 2.0+
-      mail_method = caller_locations(1,1)[0].label
-      email_template = EffectiveEmailTemplates.get(mail_method)
-      headers = headers.merge(email_template.mail_options)
-      super(headers, &block)
+      mail_method = caller_locations(1, 1)[0].label
+      options = EffectiveEmailTemplates.get(mail_method).mail_options
+
+      if EffectiveEmailTemplates.allow_variables_in_email_subject && options[:subject].present?
+        options[:subject] = Liquid::Template.parse(options[:subject]).render(@to_liquid) rescue options[:subject]
+      end
+
+      super(headers.merge(options), &block)
     end
   end
 end
-

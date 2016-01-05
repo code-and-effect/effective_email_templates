@@ -2,6 +2,9 @@ EffectiveEmailTemplates.setup do |config|
   # Database table name to store email_templates in.  Default is :email_templates
   config.email_templates_table_name = :email_templates
 
+  # Allow using liquid email template variables in email subject
+  config.allow_variables_in_email_subject = false
+
   # SimpleForm Options
   # This Hash of options will be passed into any simple_form_for() calls
   config.simple_form_options = {}

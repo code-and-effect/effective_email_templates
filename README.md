@@ -106,6 +106,12 @@ mail = TemplateMailer.welcome_email(user)
 mail.deliver
 ```
 
+It is also possible to use template variables in email subjects. For this enable this feature in `config/initializers/effective_email_templates.rb` file:
+
+```ruby
+config.allow_variables_in_email_subject = true
+```
+
 
 ## Authorization
 
