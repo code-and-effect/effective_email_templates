@@ -5,7 +5,7 @@ module Effective
       mail_method = caller_locations(1, 1)[0].label
       options = EffectiveEmailTemplates.get(mail_method).mail_options
 
-      if EffectiveEmailTemplates.allow_variables_in_email_subject && options[:subject].present?
+      if options[:subject].present?
         options[:subject] = Liquid::Template.parse(options[:subject]).render(@to_liquid) rescue options[:subject]
       end
 
