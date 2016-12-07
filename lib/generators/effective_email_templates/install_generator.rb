@@ -3,9 +3,9 @@ module EffectiveEmailTemplates
     class InstallGenerator < Rails::Generators::Base
       include Rails::Generators::Migration
 
-      desc "Creates an EffectiveEmailTemplates initializer in your application."
+      desc 'Creates an EffectiveEmailTemplates initializer in your application.'
 
-      source_root File.expand_path("../../templates", __FILE__)
+      source_root File.expand_path('../../templates', __FILE__)
 
       def self.next_migration_number(dirname)
         if not ActiveRecord::Base.timestamped_migrations
@@ -16,16 +16,12 @@ module EffectiveEmailTemplates
       end
 
       def copy_initializer
-        template "effective_email_templates.rb", "config/initializers/effective_email_templates.rb"
+        template ('../' * 3) + 'config/effective_email_templates.rb', 'config/initializers/effective_email_templates.rb'
       end
 
       def create_migration_file
         @email_templates_table_name = ':' + EffectiveEmailTemplates.email_templates_table_name.to_s
-        migration_template '../../../db/migrate/01_create_effective_email_templates.rb.erb', 'db/migrate/create_effective_email_templates.rb'
-      end
-
-      def show_readme
-        readme "README" if behavior == :invoke
+        migration_template ('../' * 3) + 'db/migrate/01_create_effective_email_templates.rb.erb', 'db/migrate/create_effective_email_templates.rb'
       end
     end
   end

@@ -8,7 +8,7 @@ module Admin
       EffectiveEmailTemplates.authorized?(self, :index, Effective::EmailTemplate)
 
       @page_title = 'Manage Email Templates'
-      @datatable = Effective::Datatables::EmailTemplates.new() if defined?(EffectiveDatatables)
+      @datatable = Effective::Datatables::EmailTemplates.new()
       @page_title = 'Email Templates'
     end
 

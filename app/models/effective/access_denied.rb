@@ -15,4 +15,3 @@ unless defined?(Effective::AccessDenied)
     end
   end
 end
-
