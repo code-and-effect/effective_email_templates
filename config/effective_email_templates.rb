@@ -45,7 +45,7 @@ EffectiveEmailTemplates.setup do |config|
   #
   # Or disable the check completely:
   # config.authorization_method = false
-  config.authorization_method = Proc.new { |controller, action, resource| can?(action, resource) } # CanCan gem
+  config.authorization_method = Proc.new { |controller, action, resource| authorize!(action, resource) } # CanCanCan
 
 
 end

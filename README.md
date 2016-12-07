@@ -44,7 +44,7 @@ This is very similar to creating other emails in Rails.
 
 1. Create a new mailer object (i.e. `/app/mailers/template_mailer.rb`)
     - Mailer objects need to inherit from `Effective::LiquidMailer`
-    
+
 2. Create a method inside the mailer object based on the name of your email (i.e. `def welcome_email`)
 
 3. Create a default email template file (i.e. `/app/views/template_mailer/welcome_email.liquid`)
@@ -156,6 +156,14 @@ rescue_from Effective::AccessDenied do |exception|
     format.any { render :text => 'Access Denied', :status => 403 }
   end
 end
+```
+
+### Permissions
+
+To allow a user to see the admin area, using CanCan:
+
+```ruby
+can :admin, :effective_email_templates
 ```
 
 
