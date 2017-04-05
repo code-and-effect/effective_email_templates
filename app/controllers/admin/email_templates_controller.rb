@@ -1,11 +1,16 @@
 module Admin
   class EmailTemplatesController < ApplicationController
-    before_filter :authenticate_user!   # This is devise, ensure we're logged in.
+    before_action :authenticate_user!   # This is devise, ensure we're logged in.
 
     layout (EffectiveEmailTemplates.layout.kind_of?(Hash) ? EffectiveEmailTemplates.layout[:admin_email_templates] : EffectiveEmailTemplates.layout)
 
     def index
-      @datatable = Effective::Datatables::EmailTemplates.new()
+      if Gem::Version.new(EffectiveDatatables::VERSION) < Gem::Version.new('3.0')
+        @datatable = Effective::Datatables::EmailTemplates.new()
+      else
+        @datatable = EffectiveEmailTemplatesDatatable.new(self)
+      end
+
       @page_title = 'Email Templates'
 
       authorize_effective_email_templates!
