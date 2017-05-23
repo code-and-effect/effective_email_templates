@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", ">= 3.2"
   s.add_dependency "coffee-rails", ">= 3.2"
-  s.add_dependency "haml", ">= 3.0"
   s.add_dependency "liquid", ">= 3.0.0"
   s.add_dependency "simple_form", ">= 1.0.0"
   s.add_dependency "effective_datatables", '>= 2.0.0'
