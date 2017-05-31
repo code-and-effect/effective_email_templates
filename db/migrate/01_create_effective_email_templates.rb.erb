@@ -1,4 +1,4 @@
-class CreateEffectiveEmailTemplates < ActiveRecord::Migration
+class CreateEffectiveEmailTemplates < ActiveRecord::Migration[4.2]
   def self.up
     create_table <%= @email_templates_table_name %> do |t|
       t.string :subject
