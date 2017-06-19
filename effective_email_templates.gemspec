@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '>= 3.2.0'
   s.add_dependency 'coffee-rails'
-  s.add_dependency 'liquid', '>= 3.0.0'
+  s.add_dependency 'liquid', ['~> 3.0', '< 4']
   s.add_dependency 'simple_form'
   s.add_dependency 'effective_datatables', '>= 2.0.0'
 
