@@ -1,6 +1,8 @@
 
 # Effective Email Templates
 
+**This gem is no longer actively maintained**
+
 Create email templates that an admin or any user can safely edit (you're protected from SQL injection and other nastiness).
 Effective Email Templates relies on [Liquid templates](http://liquidmarkup.org/) built by Shopify to profide this safety.
 
