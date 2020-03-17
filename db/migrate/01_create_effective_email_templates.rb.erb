@@ -1,14 +1,18 @@
 class CreateEffectiveEmailTemplates < ActiveRecord::Migration[4.2]
   def self.up
     create_table <%= @email_templates_table_name %> do |t|
-      t.string    :name
-
       t.string    :subject
       t.string    :from
       t.string    :bcc
       t.string    :cc
 
+      t.string    :content_type
       t.text      :body
+
+      t.string    :template_name
+      t.text      :template_body
+      t.text      :template_subject
+      t.text      :template_variables
 
       t.timestamps
     end

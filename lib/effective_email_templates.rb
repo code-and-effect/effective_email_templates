@@ -1,3 +1,4 @@
+require "liquid"
 require "effective_email_templates/engine"
 require "effective_email_templates/version"
 
@@ -30,7 +31,7 @@ module EffectiveEmailTemplates
   end
 
   def self.permitted_params
-    [:slug, :subject, :from, :bcc, :cc, :body]
+    [:from, :bcc, :cc, :subject, :body, :content_type]
   end
 
 end

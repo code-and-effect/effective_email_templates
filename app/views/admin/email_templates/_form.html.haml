@@ -1,10 +1,15 @@
 = effective_form_with(model: email_template, url: email_template.persisted? ? effective_email_templates.admin_email_template_path(email_template.id) : effective_email_templates.admin_email_templates_path) do |f|
+  - if f.object.persisted?
+    = f.static_field :template_name, label: 'Name'
+
   = f.text_field :subject, hint: 'The subject of your email.'
 
   = f.email_field :from, hint: 'Whom the email will be sent from.'
 
   = f.text_field :cc
   = f.text_field :bcc
+
+  = f.select :content_type, Effective::EmailTemplate::CONTENT_TYPES
 
   = f.text_area :body, hint: 'The content of your email template'
 

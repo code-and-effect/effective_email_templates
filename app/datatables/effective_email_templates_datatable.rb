@@ -7,10 +7,11 @@ class EffectiveEmailTemplatesDatatable < Effective::Datatable
     col :created_at, visible: false
     col :id, visible: false
 
-    col :subject
+    col :template_name, label: 'Name'
     col :from
     col :cc
     col :bcc
+    col :subject
     col :body
 
     actions_col partial: '/admin/email_templates/actions', partial_as: 'email_template'
