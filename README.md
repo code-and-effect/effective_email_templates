@@ -8,6 +8,14 @@ Effective Email Templates relies on [Liquid templates](http://liquidmarkup.org/)
 
 Rails 3.2.x and Rails 4 Support
 
+## Bootstrap3
+
+This is the `bootstrap3` branch of effective_email_templates which supports Twitter Bootstrap 3.
+
+All published effective_email_templates 0.x gems will support Twitter Bootstrap 3 and SimpleForm.
+
+For Bootstrap 4 please see the master branch and/or effective_email_templates 1.x gems.
+
 
 ## Getting Started
 
