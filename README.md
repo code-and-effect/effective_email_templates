@@ -1,12 +1,17 @@
 
 # Effective Email Templates
 
-**This gem is no longer actively maintained**
+Create email templates that an admin can edit and then choose to send.
 
-Create email templates that an admin or any user can safely edit (you're protected from SQL injection and other nastiness).
-Effective Email Templates relies on [Liquid templates](http://liquidmarkup.org/) built by Shopify to profide this safety.
+Rails 3.2.x and higher
 
-Rails 3.2.x and Rails 4 Support
+## effective_email_templates 1.0
+
+This is the 1.0 series of effective_email_templates.
+
+This requires Twitter Bootstrap 4.
+
+Please check out [Effective Email Templates 0.x](https://github.com/code-and-effect/effective_email_templates/tree/bootstrap3) for more information using this gem with Bootstrap 3.
 
 
 ## Getting Started
@@ -14,7 +19,7 @@ Rails 3.2.x and Rails 4 Support
 Add to your Gemfile:
 
 ```ruby
-gem 'effective_email_templates', :git => 'https://github.com/code-and-effect/effective_email_templates'
+gem 'effective_email_templates'
 ```
 
 Run the bundle command to install it:
@@ -38,7 +43,6 @@ Then migrate the database:
 ```ruby
 rake db:migrate
 ```
-
 
 ## Creating Email Templates
 
