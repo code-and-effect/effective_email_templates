@@ -1,8 +1,7 @@
 class CreateEffectiveEmailTemplates < ActiveRecord::Migration[4.2]
   def self.up
     create_table <%= @email_templates_table_name %> do |t|
-      t.string    :slug
-      t.string    :template
+      t.string    :name
 
       t.string    :subject
       t.string    :from
@@ -14,7 +13,6 @@ class CreateEffectiveEmailTemplates < ActiveRecord::Migration[4.2]
       t.timestamps
     end
 
-    add_index <%= @email_templates_table_name %>, :slug
   end
 
   def self.down

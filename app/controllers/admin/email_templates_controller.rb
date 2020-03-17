@@ -1,16 +1,11 @@
 module Admin
   class EmailTemplatesController < ApplicationController
-    before_action :authenticate_user!   # This is devise, ensure we're logged in.
+    before_action :authenticate_user! if respond_to?(:authenticate_user!)
 
     layout (EffectiveEmailTemplates.layout.kind_of?(Hash) ? EffectiveEmailTemplates.layout[:admin_email_templates] : EffectiveEmailTemplates.layout)
 
     def index
-      if Gem::Version.new(EffectiveDatatables::VERSION) < Gem::Version.new('3.0')
-        @datatable = Effective::Datatables::EmailTemplates.new()
-      else
-        @datatable = EffectiveEmailTemplatesDatatable.new(self)
-      end
-
+      @datatable = EffectiveEmailTemplatesDatatable.new
       @page_title = 'Email Templates'
 
       authorize_effective_email_templates!
@@ -30,10 +25,10 @@ module Admin
       authorize_effective_email_templates!
 
       if @email_template.save
-        flash[:success] = "Email template created successfully"
+        flash[:success] = 'Successfully created email template'
         redirect_to effective_email_templates.admin_email_templates_path
       else
-        flash.now[:error] = "Could not create email template"
+        flash.now[:danger] = 'Unable to create email template'
         render :new
       end
     end
@@ -52,23 +47,37 @@ module Admin
       authorize_effective_email_templates!
 
       if @email_template.update(email_template_params)
-        flash[:success] = "Email template updated successfully"
+        flash[:success] = 'Successfully updated email template'
         redirect_to effective_email_templates.admin_email_templates_path
       else
-        flash.now[:error] = "Could not update email template"
+        flash.now[:danger] = 'Unable to update email template'
         render :edit
       end
     end
 
-    private
+    def destroy
+      @email_template = Effective::EmailTemplate.find(params[:id])
 
-    def email_template_params
-      params.require(:effective_email_template).permit([ :from, :cc, :bcc, :subject, :body ])
+      authorize_effective_email_templates!
+
+      if @email_template.destroy
+        flash[:success] = 'Successfully deleted email template'
+      else
+        flash[:danger] = 'Unable to delete email template'
+      end
+
+      redirect_to effective_email_templates.admin_email_templates_path
     end
 
+    private
+
     def authorize_effective_email_templates!
-      EffectiveEmailTemplates.authorized?(self, :admin, :effective_email_templates)
-      EffectiveEmailTemplates.authorized?(self, action_name.to_sym, @email_template || Effective::EmailTemplate)
+      EffectiveEmailTemplates.authorize!(self, :admin, :effective_email_templates)
+      EffectiveEmailTemplates.authorize!(self, action_name.to_sym, @email_template || Effective::EmailTemplate)
+    end
+
+    def email_template_params
+      params.require(:effective_email_template).permit(EffectiveEmailTemplates.permitted_params)
     end
 
   end

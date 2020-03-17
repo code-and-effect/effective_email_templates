@@ -1,3 +1,6 @@
 %h1.effective-admin-heading= @page_title
 
-= render_datatable(@datatable)
+%p.text-right.effective-admin-actions
+  = link_to 'New Email Template', effective_email_templates.new_admin_email_template_path, class: 'btn btn-primary'
+
+= render_datatable @datatable

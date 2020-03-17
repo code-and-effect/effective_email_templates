@@ -6,6 +6,7 @@ module EffectiveEmailTemplates
   mattr_accessor :email_templates_table_name
   mattr_accessor :authorization_method
   mattr_accessor :layout
+  mattr_accessor :mailer
 
   def self.setup
     yield self
@@ -28,9 +29,8 @@ module EffectiveEmailTemplates
     raise Effective::AccessDenied.new('Access Denied', action, resource) unless authorized?(controller, action, resource)
   end
 
-  def self.get(slug)
-    Effective::EmailTemplate.find_by_slug(slug) || Effective::EmailTemplate.new(slug: slug)
+  def self.permitted_params
+    [:slug, :subject, :from, :bcc, :cc, :body]
   end
 
 end
-

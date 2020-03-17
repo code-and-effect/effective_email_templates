@@ -1,9 +1,11 @@
-= simple_form_for email_template, url: email_template_form_url(email_template) do |f|
-  = f.input :subject
-  = f.input :slug, disabled: true
-  = f.input :from
-  = f.input :cc
-  = f.input :bcc
-  = f.input :body, input_html: { rows: 10 }
+= effective_form_with(model: email_template, url: email_template.persisted? ? effective_email_templates.admin_email_template_path(email_template.id) : effective_email_templates.admin_email_templates_path) do |f|
+  = f.text_field :subject, hint: 'The subject of your email.'
 
-  = f.button :submit
+  = f.email_field :from, hint: 'Whom the email will be sent from.'
+
+  = f.text_field :cc
+  = f.text_field :bcc
+
+  = f.text_area :body, hint: 'The content of your email template'
+
+  = f.submit

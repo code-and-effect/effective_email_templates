@@ -1,7 +1,7 @@
 
 # Effective Email Templates
 
-Create email templates that an admin can edit and then choose to send.
+Create email templates that an admin can edit and then send.
 
 Rails 3.2.x and higher
 
@@ -44,9 +44,11 @@ Then migrate the database:
 rake db:migrate
 ```
 
-## Creating Email Templates
+## Create Email Templates
 
-This is very similar to creating other emails in Rails.
+`link_to 'Email Templates', effective_email_templates.admin_email_templates_path`
+
+To create your first post, visit `/admin/email_templates` and click `New Email Template`.
 
 1. Create a new mailer object (i.e. `/app/mailers/template_mailer.rb`)
     - Mailer objects need to inherit from `Effective::LiquidMailer`
@@ -115,15 +117,15 @@ mail.deliver
 
 ## Authorization
 
-All authorization checks are handled via the config.authorization_method found in the config/initializers/ file.
+All authorization checks are handled via the config.authorization_method found in the `app/config/initializers/effective_email_templates.rb` file.
 
-It is intended for flow through to CanCan or Pundit, but that is not required.
+It is intended for flow through to CanCan or Pundit, but neither of those gems are required.
 
 This method is called by all controller actions with the appropriate action and resource
 
 Action will be one of [:index, :show, :new, :create, :edit, :update, :destroy]
 
-Resource will the appropriate Effective::Something ActiveRecord object or class
+Resource will the appropriate Effective::EmailTemplate object or class
 
 The authorization method is defined in the initializer file:
 
@@ -169,32 +171,20 @@ end
 To allow a user to see the admin area, using CanCan:
 
 ```ruby
+can :manage, Effective::EmailTemplate
 can :admin, :effective_email_templates
 ```
 
-
 ## License
 
-MIT License.  Copyright Code and Effect Inc. http://www.codeandeffect.com
+MIT License.  Copyright [Code and Effect Inc.](http://www.codeandeffect.com/)
 
-You are not granted rights or licenses to the trademarks of Code and Effect
 
-## TODO
+## Contributing
 
-- minimize gem dependencies
-- remove unused non-admin routes and config option
-- Add an admin alert if there are mailer methods that do not have associated email templates
-- Show admin what the available arguments are for each template
-- remove `caller` usage from Effective::LiquidMailer (or remove requirement for Ruby 2.0+)
-- add `EffectiveEmailTemplates::present?` to check if a template model is present
-  - notify the app but don't raise an error if template is not present when an email is sent
-- configurable default from address
-- configurable prefix for subject line
-- use autoload rather than require
-- research panoramic gem's usage of the Resolver class and improve our Resolver usage
-- enable multipart emails
-- enable file attachments
-- import factories/fixtures in install task
-
-## Testing
-
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Bonus points for test coverage
+6. Create new Pull Request
