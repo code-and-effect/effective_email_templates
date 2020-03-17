@@ -1,13 +1,17 @@
 class CreateEffectiveEmailTemplates < ActiveRecord::Migration[4.2]
   def self.up
     create_table <%= @email_templates_table_name %> do |t|
-      t.string :subject
-      t.string :from
-      t.string :bcc
-      t.string :cc
-      t.string :slug,     :null => false
-      t.text :body,       :null => false
-      t.text :template,   :null => false
+      t.string    :slug
+      t.string    :template
+
+      t.string    :subject
+      t.string    :from
+      t.string    :bcc
+      t.string    :cc
+
+      t.text      :body
+
+      t.timestamps
     end
 
     add_index <%= @email_templates_table_name %>, :slug

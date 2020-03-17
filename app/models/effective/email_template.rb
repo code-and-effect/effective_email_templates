@@ -1,12 +1,7 @@
-require 'liquid'
-Liquid::Template.error_mode = :strict # Raises a SyntaxError when invalid syntax is used
-
 module Effective
   class EmailTemplate < ActiveRecord::Base
 
     self.table_name = EffectiveEmailTemplates.email_templates_table_name.to_s
-
-    serialize :template, Liquid::Template
 
     validate :slug_needs_to_have_simple_format
     validates :slug,      presence: true, uniqueness: true

@@ -8,7 +8,7 @@ module EffectiveEmailTemplates
       source_root File.expand_path('../../templates', __FILE__)
 
       def self.next_migration_number(dirname)
-        if not ActiveRecord::Base.timestamped_migrations
+        unless ActiveRecord::Base.timestamped_migrations
           Time.new.utc.strftime("%Y%m%d%H%M%S")
         else
           "%.3d" % (current_migration_number(dirname) + 1)

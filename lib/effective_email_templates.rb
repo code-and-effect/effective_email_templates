@@ -1,17 +1,10 @@
-require "effective_email_templates/liquid_resolver"
-require "effective_email_templates/email_view_template"
-require "effective_email_templates/template_importer"
-require "effective_email_templates/version"
 require "effective_email_templates/engine"
-
-require "effective/liquid_mailer"
-Effective::LiquidMailer.send(:append_view_path, EffectiveEmailTemplates::LiquidResolver.new)
+require "effective_email_templates/version"
 
 module EffectiveEmailTemplates
 
   mattr_accessor :email_templates_table_name
   mattr_accessor :authorization_method
-  mattr_accessor :simple_form_options
   mattr_accessor :layout
 
   def self.setup
@@ -19,10 +12,20 @@ module EffectiveEmailTemplates
   end
 
   def self.authorized?(controller, action, resource)
-    if authorization_method.respond_to?(:call) || authorization_method.kind_of?(Symbol)
-      raise Effective::AccessDenied.new() unless (controller || self).instance_exec(controller, action, resource, &authorization_method)
+    @_exceptions ||= [Effective::AccessDenied, (CanCan::AccessDenied if defined?(CanCan)), (Pundit::NotAuthorizedError if defined?(Pundit))].compact
+
+    return !!authorization_method unless authorization_method.respond_to?(:call)
+    controller = controller.controller if controller.respond_to?(:controller)
+
+    begin
+      !!(controller || self).instance_exec((controller || self), action, resource, &authorization_method)
+    rescue *@_exceptions
+      false
     end
-    true
+  end
+
+  def self.authorize!(controller, action, resource)
+    raise Effective::AccessDenied.new('Access Denied', action, resource) unless authorized?(controller, action, resource)
   end
 
   def self.get(slug)
