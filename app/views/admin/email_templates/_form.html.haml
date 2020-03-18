@@ -1,16 +1,22 @@
 = effective_form_with(model: email_template, url: email_template.persisted? ? effective_email_templates.admin_email_template_path(email_template.id) : effective_email_templates.admin_email_templates_path) do |f|
-  - if f.object.persisted?
-    = f.static_field :template_name, label: 'Name'
+  = f.static_field :template_name, label: 'Name'
+  = f.select :content_type, Effective::EmailTemplate::CONTENT_TYPES
 
-  = f.text_field :subject, hint: 'The subject of your email.'
-
-  = f.email_field :from, hint: 'Whom the email will be sent from.'
-
+  = f.email_field :from, hint: 'Whom the email will be sent from'
   = f.text_field :cc
   = f.text_field :bcc
 
-  = f.select :content_type, Effective::EmailTemplate::CONTENT_TYPES
+  = f.text_field :subject, hint: 'The subject of your email'
+  = f.text_area :body, hint: 'The content of your email template', rows: 10
 
-  = f.text_area :body, hint: 'The content of your email template'
+  .card
+    .card-body
+      %p The available variables for this email template are:
+
+      %ul
+        - Array(f.object.template_variables).each do |variable|
+          %li {{ #{variable} }}
+
+      %small.text-muted Only a developer can add additional variables
 
   = f.submit

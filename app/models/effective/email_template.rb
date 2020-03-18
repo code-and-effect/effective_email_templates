@@ -62,6 +62,8 @@ module Effective
     end
 
     def render(assigns = {})
+      assigns = assigns.deep_stringify_keys() if assigns.respond_to?(:deep_stringify_keys)
+
       {
         from: from,
         cc: cc.presence || false,
