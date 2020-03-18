@@ -32,11 +32,4 @@ EffectiveEmailTemplates.setup do |config|
     admin_email_templates: 'admin'
   }
 
-  # Mailer Settings
-  config.mailer = {
-    subject_prefix: '[example] ',
-    layout: 'effective_email_templates_mailer_layout',
-    deliver_method: nil   # :deliver (rails < 4.2), :deliver_now (rails >= 4.2) or :deliver_later
-  }
-
 end

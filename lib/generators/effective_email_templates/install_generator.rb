@@ -19,6 +19,18 @@ module EffectiveEmailTemplates
         template ('../' * 3) + 'config/effective_email_templates.rb', 'config/initializers/effective_email_templates.rb'
       end
 
+      def copy_mailer
+        template ('../' * 3) + 'config/email_templates_mailer.rb', 'app/mailers/email_templates_mailer.rb'
+      end
+
+      def copy_liquid
+        template ('../' * 3) + 'config/welcome.liquid', 'app/views/email_templates_mailer/welcome.liquid'
+      end
+
+      def copy_preview
+        ('../' * 3) + 'config/email_templates_mailer_preview.liquid', 'test/mailers/previews/email_templates_mailer_preview.liquid'
+      end
+
       def create_migration_file
         @email_templates_table_name = ':' + EffectiveEmailTemplates.email_templates_table_name.to_s
         migration_template ('../' * 3) + 'db/migrate/01_create_effective_email_templates.rb.erb', 'db/migrate/create_effective_email_templates.rb'

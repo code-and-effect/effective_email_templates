@@ -7,7 +7,6 @@ module EffectiveEmailTemplates
   mattr_accessor :email_templates_table_name
   mattr_accessor :authorization_method
   mattr_accessor :layout
-  mattr_accessor :mailer
 
   def self.setup
     yield self
