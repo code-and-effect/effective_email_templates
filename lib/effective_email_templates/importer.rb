@@ -1,29 +1,30 @@
 module EffectiveEmailTemplates
   class Importer
-    def self.import
-      new().execute(overwrite: false)
+    def self.import(quiet: false)
+      new().execute(overwrite: false, quiet: quiet)
     end
 
-    def self.overwrite
-      new().execute(overwrite: true)
+    def self.overwrite(quiet: false)
+      new().execute(overwrite: true, quiet: quiet)
     end
 
-    def execute(overwrite:)
+    def execute(overwrite:, quiet: false)
       Dir[Rails.root.join('app', 'views', '**', '*.liquid')].each do |filepath|
         name = File.basename(filepath, '.liquid')
         email_template = Effective::EmailTemplate.find_or_initialize_by(template_name: name)
 
         if email_template.persisted? && !overwrite
-          puts "SKIPPED #{filename(filepath)}"; next
+          puts("SKIPPED #{filename(filepath)}") unless quiet
+          next
         end
 
-        save(email_template, filepath)
+        save(email_template, filepath, quiet: quiet)
       end
     end
 
     private
 
-    def save(email_template, filepath)
+    def save(email_template, filepath, quiet:)
       file = File.new(filepath, 'r')
 
       attributes = begin
@@ -41,7 +42,7 @@ module EffectiveEmailTemplates
       email_template.assign_attributes(body: body)
 
       if email_template.save
-        puts "SUCCESS #{filename(filepath)}"
+        puts("SUCCESS #{filename(filepath)}") unless quiet
       else
         puts "ERROR #{filename(filepath)}: #{email_template.errors.full_messages.to_sentence}"
       end
