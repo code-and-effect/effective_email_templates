@@ -1,6 +1,6 @@
 EffectiveEmailTemplates::Engine.routes.draw do
   namespace :admin do
-    resources :email_templates
+    resources :email_templates, only: [:index, :edit, :update, :destroy]
   end
 end
 
