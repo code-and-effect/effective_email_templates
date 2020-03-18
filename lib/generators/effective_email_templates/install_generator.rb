@@ -28,13 +28,18 @@ module EffectiveEmailTemplates
       end
 
       def copy_preview
-        ('../' * 3) + 'config/email_templates_mailer_preview.liquid', 'test/mailers/previews/email_templates_mailer_preview.liquid'
+        template ('../' * 3) + 'config/email_templates_mailer_preview.rb', 'test/mailers/previews/email_templates_mailer_preview.rb'
       end
 
       def create_migration_file
         @email_templates_table_name = ':' + EffectiveEmailTemplates.email_templates_table_name.to_s
         migration_template ('../' * 3) + 'db/migrate/01_create_effective_email_templates.rb.erb', 'db/migrate/create_effective_email_templates.rb'
       end
+
+      def message
+        puts("Please run rake db:migrate and rake effective_email_templates:import")
+      end
+
     end
   end
 end
