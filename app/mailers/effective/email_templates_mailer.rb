@@ -4,7 +4,16 @@ module Effective
     def mail(headers = {}, &block)
       email_template = Effective::EmailTemplate.where(template_name: action_name).first!
 
-      assigns = route_url_assigns(email_template).merge(@assigns || {})
+      # Parse Assigns. :body is a special key
+      assigns = (@assigns || {})
+
+      if (body = assigns.delete(:body))
+        email_template.body = body
+      end
+
+      assigns = route_url_assigns(email_template).merge(assigns)
+
+      # Render from the template, possibly with updated body
       rendered = email_template.render(assigns)
 
       super(rendered.merge(headers))
