@@ -1,17 +1,13 @@
 module Effective
-  class EmailView
+  class EmailReview
     include ActiveModel::Model
 
-    attr_accessor :template_name
+    attr_accessor :email_template
     attr_accessor :body
 
     def self.build(attributes = {})
-      new().tap do |view|
-        view.assign_attributes(attributes)
-
-        if view.template_name.present?
-          view.body ||= view.email_template.body
-        end
+      new(attributes).tap do |email_review|
+        email_review.body ||= email_review.email_template&.body
       end
     end
 
@@ -23,10 +19,6 @@ module Effective
       rescue Liquid::SyntaxError => e
         errors.add(:body, e.message)
       end
-    end
-
-    def email_template
-      @email_template ||= Effective::EmailTemplate.where(template_name: template_name).first!
     end
 
   end
