@@ -1,5 +1,5 @@
 = form.fields_for(:email_review, email_review) do |f|
-  = f.text_field :template_name
+  = f.hidden_field :template_name
   = f.text_area :body, rows: 10
 
   = collapse('Show / hide email variables') do
