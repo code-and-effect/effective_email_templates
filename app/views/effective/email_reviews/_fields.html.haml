@@ -1,2 +1,13 @@
 = form.fields_for(:email_review, email_review) do |f|
+  = f.text_field :template_name
   = f.text_area :body, rows: 10
+
+  = collapse('Show / hide email variables') do
+    %p The available variables are:
+
+    %ul
+      - Array(f.object.email_template&.template_variables).each do |variable|
+        %li {{ #{variable} }}
+
+    %small.text-muted Only a developer can add additional variables
+
