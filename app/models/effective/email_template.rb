@@ -2,6 +2,8 @@ module Effective
   class EmailTemplate < ActiveRecord::Base
     self.table_name = EffectiveEmailTemplates.email_templates_table_name.to_s
 
+    log_changes if respond_to?(:log_changes)
+
     CONTENT_TYPES = ['text/plain', 'text/html']
 
     # Attributes
