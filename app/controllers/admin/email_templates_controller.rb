@@ -34,7 +34,11 @@ module Admin
     end
 
     def edit
-      @email_template = Effective::EmailTemplate.find(params[:id])
+      @email_template =
+        Effective::EmailTemplate.where(id: params[:id]).or(
+          Effective::EmailTemplate.where(template_name: params[:id])
+        ).first!
+
       @page_title = 'Edit Email Template'
 
       authorize_effective_email_templates!
