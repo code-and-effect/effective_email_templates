@@ -4,7 +4,7 @@
 module HasOneEmailReview
   extend ActiveSupport::Concern
 
-  module ActiveRecord
+  module Base
     def has_one_email_review
       include ::HasOneEmailReview
     end

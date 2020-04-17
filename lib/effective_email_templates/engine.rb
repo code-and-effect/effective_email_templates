@@ -10,7 +10,7 @@ module EffectiveEmailTemplates
     # Include has_one_email_review concern and allow any ActiveRecord object to call it
     initializer 'effective_email_templates.active_record' do |app|
       ActiveSupport.on_load :active_record do
-        ActiveRecord::Base.extend(HasOneEmailReview::ActiveRecord)
+        ActiveRecord::Base.extend(HasOneEmailReview::Base)
       end
     end
 
