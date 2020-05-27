@@ -51,14 +51,15 @@ module Effective
     def render(assigns = {})
       assigns = deep_stringify_assigns(assigns)
 
-      {
+      result={
         from: from,
-        cc: cc.presence || false,
-        bcc: bcc.presence || false,
         content_type: content_type,
         subject: template_subject.render(assigns),
         body: template_body.render(assigns)
       }
+      result[:cc]= cc.presence if cc.presence
+      result[:bcc]= bcc.presence if bcc.presence
+      result
     end
 
     def template_variables
