@@ -6,6 +6,7 @@ module EffectiveEmailTemplates
 
   mattr_accessor :email_templates_table_name
   mattr_accessor :authorization_method
+  mattr_accessor :select_content_type
   mattr_accessor :layout
 
   def self.setup

@@ -32,4 +32,7 @@ EffectiveEmailTemplates.setup do |config|
     admin_email_templates: 'admin'
   }
 
+  # Not allowed to select text/html by default
+  config.select_content_type = false
+
 end

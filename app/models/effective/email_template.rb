@@ -44,6 +44,20 @@ module Effective
     validates :content_type, presence: true, inclusion: { in: CONTENT_TYPES }
     validates :template_name, presence: true
 
+    # validate(if: -> { content_type == 'text/html' && body.present? }) do
+    #   unless body.include?('<') && body.include?('>')
+    #     self.errors.add(:content_type, 'expected html tags in body')
+    #     self.errors.add(:body, 'expected html tags in body')
+    #   end
+    # end
+
+    # validate(if: -> { content_type == 'text/plain' && body.present? }) do
+    #   if body.include?('</a>') || body.include?('</p>')
+    #     self.errors.add(:content_type, 'expected no html tags in body')
+    #     self.errors.add(:body, 'expected no html tags in body')
+    #   end
+    # end
+
     def to_s
       template_name.presence || 'New Email Template'
     end

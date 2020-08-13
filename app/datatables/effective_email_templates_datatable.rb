@@ -14,6 +14,8 @@ class EffectiveEmailTemplatesDatatable < Effective::Datatable
     col :subject
     col :body
 
+    col :content_type, visible: false
+
     actions_col partial: '/admin/email_templates/actions', partial_as: 'email_template'
   end
 
@@ -21,4 +23,3 @@ class EffectiveEmailTemplatesDatatable < Effective::Datatable
     Effective::EmailTemplate.all
   end
 end
-
