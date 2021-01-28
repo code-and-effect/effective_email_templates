@@ -73,11 +73,11 @@ module Effective
     private
 
     def template_body
-      Liquid::Template.parse(body_was || body)
+      Liquid::Template.parse(body)
     end
 
     def template_subject
-      Liquid::Template.parse(subject_was || subject)
+      Liquid::Template.parse(subject)
     end
 
     def deep_stringify_assigns(assigns)
