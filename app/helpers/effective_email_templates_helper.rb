@@ -13,6 +13,7 @@ module EffectiveEmailTemplatesHelper
 
       if mail.present?
         email_review.body = mail.message.body
+        email_review.subject = mail.message.subject
       end
     end
 
