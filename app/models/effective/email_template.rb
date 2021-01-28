@@ -22,21 +22,8 @@ module Effective
       self.content_type ||= CONTENT_TYPES.first
     end
 
-    before_validation(if: -> { body.present? }) do
-      begin
-        Liquid::Template.parse(body)
-      rescue Liquid::SyntaxError => e
-        errors.add(:body, e.message)
-      end
-    end
-
-    before_validation(if: -> { subject.present? }) do
-      begin
-        Liquid::Template.parse(subject)
-      rescue Liquid::SyntaxError => e
-        errors.add(:subject, e.message)
-      end
-    end
+    validates :body, liquid: true
+    validates :subject, liquid: true
 
     validates :subject, presence: true
     validates :from, presence: true
@@ -86,11 +73,11 @@ module Effective
     private
 
     def template_body
-      Liquid::Template.parse(body)
+      Liquid::Template.parse(body_was || body)
     end
 
     def template_subject
-      Liquid::Template.parse(subject)
+      Liquid::Template.parse(subject_was || subject)
     end
 
     def deep_stringify_assigns(assigns)

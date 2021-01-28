@@ -9,16 +9,18 @@ module EffectiveEmailTemplates
     end
 
     def execute(overwrite:, quiet: false)
-      Dir[Rails.root.join('app', 'views', '**', '*.liquid')].each do |filepath|
-        name = File.basename(filepath, '.liquid')
-        email_template = Effective::EmailTemplate.find_or_initialize_by(template_name: name)
+      ActionController::Base.view_paths.map(&:path).each do |path|
+        Dir[Rails.root.join(path, '**', '*_mailer/', '*.liquid')].each do |filepath|
+          name = File.basename(filepath, '.liquid')
+          email_template = Effective::EmailTemplate.find_or_initialize_by(template_name: name)
 
-        if email_template.persisted? && !overwrite
-          puts("SKIPPED #{filename(filepath)}") unless quiet
-          next
+          if email_template.persisted? && !overwrite
+            puts("SKIPPED #{filename(filepath)}") unless quiet
+            next
+          end
+
+          save(email_template, filepath, quiet: quiet)
         end
-
-        save(email_template, filepath, quiet: quiet)
       end
     end
 
