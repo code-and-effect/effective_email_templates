@@ -23,6 +23,10 @@ module EffectiveEmailTemplates
       effective_email_template.render(view.assigns['to_liquid'])
     end
 
+    def format
+      :html
+    end
+
     def formats
       [:html]
     end
@@ -36,4 +40,3 @@ module EffectiveEmailTemplates
     end
   end
 end
-
