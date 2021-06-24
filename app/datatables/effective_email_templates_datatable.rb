@@ -8,15 +8,24 @@ class EffectiveEmailTemplatesDatatable < Effective::Datatable
     col :id, visible: false
 
     col :template_name, label: 'Name'
-    col :from
-    col :cc
-    col :bcc
+
+    col :from do |email_template|
+      html_escape(email_template.from)
+    end
+
+    col :cc do |email_template|
+      html_escape(email_template.cc)
+    end
+
+    col :bcc do |email_template|
+      html_escape(email_template.cc)
+    end
+
     col :subject
     col :body
-
     col :content_type, visible: false
 
-    actions_col partial: '/admin/email_templates/actions', partial_as: 'email_template'
+    actions_col
   end
 
   collection do

@@ -2,21 +2,24 @@ module Effective
   class EmailTemplate < ActiveRecord::Base
     self.table_name = EffectiveEmailTemplates.email_templates_table_name.to_s
 
+    attr_accessor :current_user
+
     log_changes if respond_to?(:log_changes)
 
     CONTENT_TYPES = ['text/plain', 'text/html']
 
-    # Attributes
-    # subject           :string
-    # from              :string
-    # cc                :string
-    # bcc               :string
-    # body              :text
-    # content_type      :string
-    #
-    # template_name     :string
-    #
-    # timestamps
+    effective_resource do
+      template_name     :string
+      content_type      :string
+
+      subject           :string
+      from              :string
+      cc                :string
+      bcc               :string
+      body              :text
+
+      timestamps
+    end
 
     before_validation do
       self.content_type ||= CONTENT_TYPES.first

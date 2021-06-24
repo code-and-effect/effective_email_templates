@@ -1,5 +1,0 @@
-= dropdown(variation: :dropleft) do
-  = dropdown_link_to 'Edit', effective_email_templates.edit_admin_email_template_path(email_template)
-
-  = dropdown_link_to "Delete #{email_template}", effective_email_templates.admin_email_template_path(email_template),
-    data: { method: :delete, confirm: "Really delete #{email_template}?" }
