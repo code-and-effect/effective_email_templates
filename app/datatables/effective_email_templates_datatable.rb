@@ -18,7 +18,7 @@ class EffectiveEmailTemplatesDatatable < Effective::Datatable
     end
 
     col :bcc do |email_template|
-      html_escape(email_template.cc)
+      html_escape(email_template.bcc)
     end
 
     col :subject
