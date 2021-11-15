@@ -1,15 +1,19 @@
 module EffectiveEmailTemplates
   class Importer
-    def self.import(quiet: false)
-      new().execute(overwrite: false, quiet: quiet)
+    def self.import(quiet: false, paths: nil)
+      new().execute(overwrite: false, paths: paths, quiet: quiet)
     end
 
-    def self.overwrite(quiet: false)
-      new().execute(overwrite: true, quiet: quiet)
+    def self.overwrite(quiet: false, paths: nil)
+      new().execute(overwrite: true, paths: paths, quiet: quiet)
     end
 
-    def execute(overwrite:, quiet: false)
-      ActionController::Base.view_paths.map(&:path).each do |path|
+    def execute(overwrite:, paths: nil, quiet: false)
+      return false unless ActiveRecord::Base.connection.table_exists?(EffectiveEmailTemplates.email_templates_table_name)
+
+      paths ||= ActionController::Base.view_paths.map(&:path)
+
+      paths.each do |path|
         Dir[Rails.root.join(path, '**', '*_mailer/', '*.liquid')].each do |filepath|
           name = File.basename(filepath, '.liquid')
           email_template = Effective::EmailTemplate.find_or_initialize_by(template_name: name)
