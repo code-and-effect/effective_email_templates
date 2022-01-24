@@ -22,7 +22,11 @@ class EffectiveEmailTemplatesDatatable < Effective::Datatable
     end
 
     col :subject
-    col :body
+
+    col :body do |email_template|
+      simple_format(email_template.body)
+    end
+
     col :content_type, visible: false
 
     actions_col
