@@ -29,7 +29,7 @@ module Effective
     validates :subject, liquid: true
 
     validates :subject, presence: true
-    validates :from, presence: true
+    validates :from, presence: true, email: true
     validates :body, presence: true
     validates :content_type, presence: true, inclusion: { in: CONTENT_TYPES }
     validates :template_name, presence: true
