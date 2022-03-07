@@ -1,5 +1,4 @@
-# HasOneEmailReview
-# Allows any model to easily review an email template and make changes to the body
+# Added to effective email templates mailers
 
 module EffectiveEmailTemplatesMailer
   extend ActiveSupport::Concern
@@ -12,7 +11,8 @@ module EffectiveEmailTemplatesMailer
     body = assigns.delete(:body) || headers[:body] || headers['body']
     email_template.body = body if body.present?
 
-    subject = assigns.delete(:subject) || headers[:subject] || headers['subject']
+    # Ignore the subject when passed in via mail method subject: key.
+    subject = assigns.delete(:subject)
     email_template.subject = subject if subject.present?
 
     # Add any _url helpers
