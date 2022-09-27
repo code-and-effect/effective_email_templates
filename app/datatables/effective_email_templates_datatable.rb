@@ -10,15 +10,15 @@ class EffectiveEmailTemplatesDatatable < Effective::Datatable
     col :template_name, label: 'Name'
 
     col :from do |email_template|
-      html_escape(email_template.from)
+      sanitize(email_template.from)
     end
 
     col :cc do |email_template|
-      html_escape(email_template.cc)
+      sanitize(email_template.cc)
     end
 
     col :bcc do |email_template|
-      html_escape(email_template.bcc)
+      sanitize(email_template.bcc)
     end
 
     col :subject
