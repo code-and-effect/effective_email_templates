@@ -4,7 +4,9 @@ module EffectiveEmailTemplatesMailer
   extend ActiveSupport::Concern
 
   def mail(headers = {}, &block)
-    email_template = Effective::EmailTemplate.where(template_name: action_name).first!
+    email_template = Effective::EmailTemplate.where(template_name: action_name).first
+    return super() if email_template.blank?
+
     assigns = (@assigns || {})
 
     # Parse assigns. Special keys for body and subject.
