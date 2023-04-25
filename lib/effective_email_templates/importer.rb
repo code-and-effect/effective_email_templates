@@ -10,9 +10,9 @@ module EffectiveEmailTemplates
 
     def execute(overwrite:, paths: nil, quiet: false)
       return false unless ActiveRecord::Base.connection.table_exists?(EffectiveEmailTemplates.email_templates_table_name)
+      return false if defined?(Tenant) && Tenant.current.blank?
 
       paths ||= if defined?(Tenant)
-        raise('expected a tenant') unless Tenant.current.present?
         ActionController::Base.view_paths.reject { |view| view.path.include?('/apps/') }.map(&:path) + Tenant.view_paths.map(&:to_s)
       else
         ActionController::Base.view_paths.map(&:path)
