@@ -5,7 +5,7 @@ module EffectiveEmailTemplatesMailer
 
   def mail(headers = {}, &block)
     email_template = Effective::EmailTemplate.where(template_name: action_name).first
-    return super() if email_template.blank?
+    return super if email_template.blank?
 
     assigns = (@assigns || {})
 
