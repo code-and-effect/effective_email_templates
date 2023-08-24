@@ -21,4 +21,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'effective_bootstrap'
   s.add_dependency 'effective_datatables', '>= 4.0.0'
   s.add_dependency 'effective_resources'
+
+  s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'devise'
+  s.add_development_dependency 'pry-byebug'
+  s.add_development_dependency 'effective_test_bot'
+  s.add_development_dependency 'effective_developer' # Optional but suggested
+  s.add_development_dependency 'psych', '< 4'
 end
