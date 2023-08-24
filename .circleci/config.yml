@@ -1,0 +1,53 @@
+version: 2.1 # use CircleCI 2.1
+
+# Orbs and containers control the docker image each job is run in.
+orbs:
+  ruby: circleci/ruby@2.0.1
+  browser-tools: circleci/browser-tools@1.4.3
+
+container: &container
+  docker:
+    - image: cimg/ruby:3.1.2-browsers # images: https://hub.docker.com/r/circleci/ruby/tags
+      environment:
+        RAILS_ENV: test
+    - image: cimg/postgres:15.1
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
+
+jobs:
+  test:
+    <<: *container
+    steps:
+      - checkout
+
+      - run:
+          name: Configure Bundler
+          command: |
+            echo 'export BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")' >> $BASH_ENV
+            source $BASH_ENV
+            gem install bundler
+
+      - restore_cache:
+          key: effective-gem-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: Install Bundle
+          command: |
+            bundle install --jobs=4 --retry=3
+
+      - save_cache:
+          key: effective-gem-{{ checksum "Gemfile.lock" }}
+          paths:
+            - ./vendor/bundle
+
+      - run:
+          name: Run Unit Tests
+          command: bundle exec rails test
+
+      - run:
+          name: All Tests Passed
+          command: echo "All Tests Passed"

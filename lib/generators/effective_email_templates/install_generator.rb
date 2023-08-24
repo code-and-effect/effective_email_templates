@@ -32,8 +32,7 @@ module EffectiveEmailTemplates
       end
 
       def create_migration_file
-        @email_templates_table_name = ':' + EffectiveEmailTemplates.email_templates_table_name.to_s
-        migration_template ('../' * 3) + 'db/migrate/01_create_effective_email_templates.rb.erb', 'db/migrate/create_effective_email_templates.rb'
+        migration_template ('../' * 3) + 'db/migrate/101_create_effective_email_templates.rb', 'db/migrate/create_effective_email_templates.rb'
       end
 
       def message
