@@ -9,8 +9,9 @@ module EffectiveEmailTemplates
     end
 
     def execute(overwrite:, paths: nil, quiet: false)
-      return false unless ActiveRecord::Base.connection.table_exists?(EffectiveEmailTemplates.email_templates_table_name)
+      return false unless ActiveRecord::Base.connection.table_exists?(EffectiveEmailTemplates.email_templates_table_name || :email_templates)
       return false if defined?(Tenant) && Tenant.current.blank?
+      return false if EffectiveEmailTemplates.mailer_froms.blank?
 
       paths ||= if defined?(Tenant)
         ActionController::Base.view_paths.reject { |view| view.path.include?('/apps/') }.map(&:path) + Tenant.view_paths.map(&:to_s)
@@ -38,6 +39,9 @@ module EffectiveEmailTemplates
     def save(email_template, filepath, quiet:)
       file = File.new(filepath, 'r')
 
+      froms = EffectiveEmailTemplates.mailer_froms
+      raise('expected an Array of mailer froms') unless froms.kind_of?(Array)
+
       attributes = begin
         content = YAML.load(file)
         content.kind_of?(Hash) ? content : {}
@@ -49,7 +53,10 @@ module EffectiveEmailTemplates
         content.gsub(match[1], '').strip if match
       end
 
+      from = froms.find { |from| from.include?(attributes['from']) } || froms.first
+
       email_template.assign_attributes(attributes)
+      email_template.assign_attributes(from: from)
       email_template.assign_attributes(body: body)
 
       if email_template.save

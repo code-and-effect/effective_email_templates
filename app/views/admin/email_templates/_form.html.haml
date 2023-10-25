@@ -4,7 +4,7 @@
   - if EffectiveEmailTemplates.select_content_type
     = f.select :content_type, Effective::EmailTemplate::CONTENT_TYPES
 
-  = f.text_field :from, hint: 'Whom the email will be sent from'
+  = f.select :from, EffectiveEmailTemplates.mailer_froms, hint: 'Please contact us to add additional sender addresses.'
   = f.text_field :cc
   = f.text_field :bcc
 
@@ -19,6 +19,8 @@
         - Array(f.object.template_variables).each do |variable|
           %li {{ #{variable} }}
 
-      %small.text-muted Only a developer can add additional variables
+      %small.text-muted Please contact us to add additional variables
 
-  = f.submit
+  = f.submit do
+    = f.save 'Save'
+    = f.save 'Continue'

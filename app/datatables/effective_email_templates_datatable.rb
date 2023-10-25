@@ -9,23 +9,11 @@ class EffectiveEmailTemplatesDatatable < Effective::Datatable
 
     col :template_name, label: 'Name'
 
-    col :from do |email_template|
-      sanitize(email_template.from)
-    end
-
-    col :cc do |email_template|
-      sanitize(email_template.cc)
-    end
-
-    col :bcc do |email_template|
-      sanitize(email_template.bcc)
-    end
-
+    col :from, search: EffectiveEmailTemplates.mailer_froms
+    col :cc
+    col :bcc
     col :subject
-
-    col :body do |email_template|
-      simple_format(email_template.body)
-    end
+    col :body
 
     col :content_type, visible: false
 
