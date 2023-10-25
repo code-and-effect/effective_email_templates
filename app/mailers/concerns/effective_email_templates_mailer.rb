@@ -9,20 +9,26 @@ module EffectiveEmailTemplatesMailer
 
     assigns = (@assigns || {})
 
-    # Parse assigns. Special keys for body and subject.
+    # Parse body content if given
     body = assigns.delete(:body) || headers[:body] || headers['body']
     email_template.body = body if body.present?
 
-    subject = assigns.delete(:subject) || headers[:subject] || headers['subject']
+    # Parse subject content if explicitly given
+    # Otherwise the :subject key is a default and should be ignored in favor of the email template subject instead
+    subject = assigns.delete(:subject)
+    subject ||= (headers[:subject] || headers['subject']) if (headers[:custom_subject] || headers['custom_subject'])
     email_template.subject = subject if subject.present?
 
     # Add any _url helpers
     assigns = route_url_assigns(email_template, assigns).merge(assigns)
 
-    # Render from the template, possibly with updated body
+    # Render from the template, possibly with updated body and subject
     rendered = email_template.render(assigns)
 
-    super(rendered.merge(headers.except(:body, :subject, 'body', 'subject')))
+    # Merge any other passed values
+    merged = rendered.merge(headers.except(:body, :subject, :custom_subject, 'body', 'subject', 'custom_subject'))
+
+    super(merged)
   end
 
   private
