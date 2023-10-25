@@ -13,8 +13,7 @@ module EffectiveEmailTemplatesMailer
     body = assigns.delete(:body) || headers[:body] || headers['body']
     email_template.body = body if body.present?
 
-    # Ignore the subject when passed in via mail method subject: key.
-    subject = assigns.delete(:subject)
+    subject = assigns.delete(:subject) || headers[:subject] || headers['subject']
     email_template.subject = subject if subject.present?
 
     # Add any _url helpers
