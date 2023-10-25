@@ -53,7 +53,8 @@ module EffectiveEmailTemplates
         content.gsub(match[1], '').strip if match
       end
 
-      from = froms.find { |from| from.include?(attributes['from']) } || froms.first
+      from = froms.find { |from| from.include?(attributes['from']) } if attributes['from'].present?
+      from ||= froms.first
 
       email_template.assign_attributes(attributes)
       email_template.assign_attributes(from: from)
