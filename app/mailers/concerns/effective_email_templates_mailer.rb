@@ -15,9 +15,10 @@ module EffectiveEmailTemplatesMailer
 
     # Parse subject content if explicitly given
     # Otherwise the :subject key is a default and should be ignored in favor of the email template subject instead
-    subject = assigns.delete(:subject)
-    subject ||= (headers[:subject] || headers['subject']) if (headers[:custom_subject] || headers['custom_subject'])
+    subject = assigns.delete(:subject) || headers[:subject] || headers['subject']
     email_template.subject = subject if subject.present?
+
+    # If the body or subject are nil, they will be populated from the email_template
 
     # Add any _url helpers
     assigns = route_url_assigns(email_template, assigns).merge(assigns)
@@ -26,7 +27,20 @@ module EffectiveEmailTemplatesMailer
     rendered = email_template.render(assigns)
 
     # Merge any other passed values
-    merged = rendered.merge(headers.except(:body, :subject, :custom_subject, 'body', 'subject', 'custom_subject'))
+    merged = rendered.merge(headers.except(:body, :subject, 'body', 'subject'))
+
+    # Finalize the subject_for Proc
+    if respond_to?(:subject_for) # EffectiveResourcesMailer
+      if (prefix = EffectiveResources.mailer_subject_prefix_hint).present?
+        subject = subject_for(action_name, merged[:subject], email_template, merged)
+
+        if subject.start_with?("#{prefix}#{prefix}") || subject.start_with?("#{prefix} #{prefix}")
+          subject = subject.sub(prefix, '')
+        end
+
+        merged[:subject] = subject
+      end
+    end
 
     super(merged)
   end

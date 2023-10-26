@@ -23,6 +23,7 @@ module Effective
 
     before_validation do
       self.content_type ||= CONTENT_TYPES.first
+      self.from ||= EffectiveEmailTemplates.mailer_froms.first
     end
 
     validates :body, liquid: true

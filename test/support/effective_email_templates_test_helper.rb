@@ -16,6 +16,14 @@ module EffectiveEmailTemplatesTestHelper
     end
   end
 
+  def with_mailer_subject_proc(&block)
+    before = EffectiveResources.mailer_subject
+
+    EffectiveResources.mailer_subject = Proc.new { |action, subject, resource, opts = {}| "[EFFECTIVE] #{subject}" }
+    yield
+    EffectiveResources.mailer_subject = before
+  end
+
   # assert_email :new_user_sign_up
   # assert_email :new_user_sign_up, to: 'newuser@example.com'
   # assert_email from: 'admin@example.com'

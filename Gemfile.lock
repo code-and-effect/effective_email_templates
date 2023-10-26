@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    effective_email_templates (1.5.1)
+    effective_email_templates (1.6.0)
       effective_bootstrap
       effective_datatables (>= 4.0.0)
       effective_resources
@@ -126,7 +126,7 @@ GEM
     effective_developer (0.7.8)
       effective_resources
       rails (>= 3.2.0)
-    effective_resources (2.12.0)
+    effective_resources (2.15.0)
       rails (>= 4.0.0)
     effective_test_bot (1.4.0)
       capybara
