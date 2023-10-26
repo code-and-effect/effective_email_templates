@@ -4,11 +4,15 @@
   - if EffectiveEmailTemplates.select_content_type
     = f.select :content_type, Effective::EmailTemplate::CONTENT_TYPES
 
-  = f.select :from, EffectiveEmailTemplates.mailer_froms, hint: 'Please contact us to add additional sender addresses.'
+  = f.select :from, mailer_froms_collection(), hint: 'Please contact us to add additional sender addresses. Please refresh the page if this from address looks weird.'
   = f.text_field :cc
   = f.text_field :bcc
 
-  = f.text_field :subject, hint: 'The subject of your email'
+  - prefix_hint = EffectiveResources.mailer_subject_prefix_hint.to_s.strip.presence
+
+  = f.text_field :subject,
+    hint: (prefix_hint ? "The subject of your email. It will be automatically prefixed with #{prefix_hint}." : 'The subject of your email')
+
   = f.text_area :body, hint: 'The content of your email template', rows: 10
 
   .card

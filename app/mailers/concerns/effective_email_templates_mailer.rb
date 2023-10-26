@@ -29,9 +29,17 @@ module EffectiveEmailTemplatesMailer
     # Merge any other passed values
     merged = rendered.merge(headers.except(:body, :subject, 'body', 'subject'))
 
-    # Finalize the subject with Proc
+    # Finalize the subject_for Proc
     if respond_to?(:subject_for) # EffectiveResourcesMailer
-      merged[:subject] = subject_for(action_name, merged[:subject], email_template, merged)
+      if (prefix = EffectiveResources.mailer_subject_prefix_hint).present?
+        subject = subject_for(action_name, merged[:subject], email_template, merged)
+
+        if subject.start_with?("#{prefix}#{prefix}") || subject.start_with?("#{prefix} #{prefix}")
+          subject = subject.sub(prefix, '')
+        end
+
+        merged[:subject] = subject
+      end
     end
 
     super(merged)

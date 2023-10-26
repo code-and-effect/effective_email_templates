@@ -22,6 +22,10 @@ EffectiveResources.setup do |config|
   # Send Admin correspondence To
   config.mailer_admin = '"Admin" <admin@example.com>'
 
+  # Default Froms radios collection
+  # Used for effective gems email collection. Leave blank to fallback to just the mailer_sender
+  config.mailer_froms = ['"Info" <info@example.com>', '"Admin" <admin@example.com>']
+
   # Prefix all effective_* gem mailer subjects
-  config.mailer_subject = Proc.new { |action, subject, resource, opts = {}| "[EXAMPLE] #{subject}" }
+  # Do not add mailer_subject here because we test for it later
 end
