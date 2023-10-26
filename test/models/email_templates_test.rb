@@ -5,4 +5,15 @@ class EmailTemplatesTest < ActiveSupport::TestCase
     email_template = build_effective_email_template
     assert email_template.valid?
   end
+
+  test 'welcome' do
+    user = build_user()
+
+    ApplicationMailer.welcome(user).deliver_now
+    mail = ActionMailer::Base.deliveries.last
+
+    assert_equal "Welcome #{user.first_name}", mail.subject
+
+  end
+
 end
