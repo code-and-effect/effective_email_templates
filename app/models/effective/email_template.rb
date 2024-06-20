@@ -6,7 +6,9 @@ module Effective
 
     log_changes if respond_to?(:log_changes)
 
-    CONTENT_TYPES = ['text/plain', 'text/html']
+    CONTENT_TYPE_PLAIN = 'text/plain'
+    CONTENT_TYPE_HTML = 'text/html'
+    CONTENT_TYPES = [CONTENT_TYPE_PLAIN, CONTENT_TYPE_HTML]
 
     effective_resource do
       template_name     :string
@@ -35,28 +37,30 @@ module Effective
     validates :content_type, presence: true, inclusion: { in: CONTENT_TYPES }
     validates :template_name, presence: true
 
-    # validate(if: -> { content_type == 'text/html' && body.present? }) do
-    #   unless body.include?('<') && body.include?('>')
-    #     self.errors.add(:content_type, 'expected html tags in body')
-    #     self.errors.add(:body, 'expected html tags in body')
-    #   end
-    # end
+    validate(if: -> { html? && body.present? }) do
+      errors.add(:body, 'expected html tags in body') unless body.include?('</p>') || body.include?('</div>')
+    end
 
-    # validate(if: -> { content_type == 'text/plain' && body.present? }) do
-    #   if body.include?('</a>') || body.include?('</p>')
-    #     self.errors.add(:content_type, 'expected no html tags in body')
-    #     self.errors.add(:body, 'expected no html tags in body')
-    #   end
-    # end
+    validate(if: -> { plain? && body.present? }) do
+      errors.add(:body, 'expected no html tags in body') if body.include?('</p>') || body.include?('</div>')
+    end
 
     def to_s
       template_name.presence || 'New Email Template'
     end
 
+    def html?
+      content_type == CONTENT_TYPE_HTML
+    end
+
+    def plain?
+      content_type == CONTENT_TYPE_PLAIN
+    end
+
     def render(assigns = {})
       assigns = deep_stringify_assigns(assigns)
 
-      result = {
+      {
         from: from,
         cc: cc.presence,
         bcc: bcc.presence,

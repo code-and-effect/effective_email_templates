@@ -9,21 +9,22 @@
   = f.text_field :bcc
 
   - prefix_hint = EffectiveResources.mailer_subject_prefix_hint.to_s.strip.presence
+  = f.text_field :subject, hint: (prefix_hint ? "The subject of your email. It will be automatically prefixed with: #{prefix_hint}" : 'The subject of your email')
 
-  = f.text_field :subject,
-    hint: (prefix_hint ? "The subject of your email. It will be automatically prefixed with #{prefix_hint}." : 'The subject of your email')
+  = f.show_if(:content_type, Effective::EmailTemplate::CONTENT_TYPE_PLAIN) do
+    = f.text_area :body, hint: 'The text/plain content of your email template', rows: 10
+  
+  = f.show_if(:content_type, Effective::EmailTemplate::CONTENT_TYPE_HTML) do
+    = f.article_editor :body, hint: 'The text/html content of your email template', mode: :email
 
-  = f.text_area :body, hint: 'The content of your email template', rows: 10
+  = card do
+    %p The available variables for this email template are:
 
-  .card
-    .card-body
-      %p The available variables for this email template are:
+    %ul
+      - Array(f.object.template_variables).each do |variable|
+        %li {{ #{variable} }}
 
-      %ul
-        - Array(f.object.template_variables).each do |variable|
-          %li {{ #{variable} }}
-
-      %small.text-muted Please contact us to add additional variables
+    %small.text-muted Please contact us to add additional variables
 
   = f.submit do
     = f.save 'Save'

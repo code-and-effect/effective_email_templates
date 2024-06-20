@@ -9,7 +9,10 @@ class EffectiveEmailTemplatesDatatable < Effective::Datatable
 
     col :template_name, label: 'Name'
 
-    col :from, search: EffectiveEmailTemplates.mailer_froms
+    col :from, search: EffectiveEmailTemplates.mailer_froms do |email_template|
+      ERB::Util.html_escape_once(email_template.from)
+    end
+
     col :cc
     col :bcc
     col :subject

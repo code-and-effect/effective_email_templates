@@ -42,10 +42,29 @@ module EffectiveEmailTemplatesMailer
       end
     end
 
-    super(merged)
+    # For text/plain emails
+    return super(merged) if email_template.plain?
+
+    # For text/html emails
+    body = merged.fetch(:body)
+    layout = mailer_layout().presence || raise("expected a mailer layout when rendering text/html templates")
+
+    super(merged.except(:body, :content_type)) do |format|
+      format.text { strip_tags(body) }
+      format.html { render(layout: layout, inline: body) }
+    end
+  end
+
+  def mailer_layout
+    try(:mailer_settings).try(:mailer_layout) || EffectiveEmailTemplates.mailer_layout
   end
 
   private
+
+  def strip_tags(html)
+    return html if html.blank?
+    view_context.strip_tags(html.gsub(/<\/(div|p|br|h[1-6])>/, "\n"))
+  end
 
   def route_url_assigns(email_template, existing)
     route_variables = email_template.template_variables
