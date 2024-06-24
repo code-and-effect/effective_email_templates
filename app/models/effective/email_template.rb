@@ -1,5 +1,7 @@
 module Effective
   class EmailTemplate < ActiveRecord::Base
+    include ActionView::Helpers::TextHelper
+
     self.table_name = (EffectiveEmailTemplates.email_templates_table_name || :email_templates).to_s
 
     attr_accessor :current_user
@@ -12,20 +14,22 @@ module Effective
 
     effective_resource do
       template_name     :string
-      content_type      :string
 
-      subject           :string
       from              :string
       cc                :string
       bcc               :string
+
+      subject           :string
       body              :text
+
+      content_type      :string
 
       timestamps
     end
 
     before_validation do
-      self.content_type ||= CONTENT_TYPES.first
       self.from ||= EffectiveEmailTemplates.mailer_froms.first
+      self.content_type ||= CONTENT_TYPES.first
     end
 
     validates :body, liquid: true
@@ -38,11 +42,11 @@ module Effective
     validates :template_name, presence: true
 
     validate(if: -> { html? && body.present? }) do
-      errors.add(:body, 'expected html tags in body') unless body.include?('</p>') || body.include?('</div>')
+      errors.add(:body, 'expected html tags in body') if body_plain?
     end
 
     validate(if: -> { plain? && body.present? }) do
-      errors.add(:body, 'expected no html tags in body') if body.include?('</p>') || body.include?('</div>')
+      errors.add(:body, 'unexpected html tags found in body') if body_html?
     end
 
     def to_s
@@ -55,6 +59,14 @@ module Effective
 
     def plain?
       content_type == CONTENT_TYPE_PLAIN
+    end
+
+    def body_html?
+      body.present? && (body.include?('</p>') || body.include?('</div>'))
+    end
+
+    def body_plain?
+      body.present? && !(body.include?('</p>') || body.include?('</div>'))
     end
 
     def render(assigns = {})
@@ -76,6 +88,18 @@ module Effective
           [node.name, *node.lookups].join('.')
         end.visit
       end.flatten.uniq.compact
+    end
+
+    def save_as_html!
+      assign_attributes(content_type: 'text/html')
+      assign_attributes(body: simple_format(body)) if body_plain?
+      save!
+    end
+
+    def save_as_plain!
+      assign_attributes(content_type: 'text/plain')
+      assign_attributes(body: strip_tags(body)) if body_html?
+      save!
     end
 
     private

@@ -4,7 +4,8 @@ module EffectiveEmailTemplatesTestBuilder
     Effective::EmailTemplate.new(
       template_name: 'welcome',
       subject: 'Welcome {{ user.first_name }} {{ user.last_name }}',
-      body: "Welcome {{ user.first_name }} {{ user.last_name }}\r\nHave a great day!"
+      body: "Welcome {{ user.first_name }} {{ user.last_name }}\r\nHave a great day!",
+      content_type: 'text/plain'
     )
   end
 

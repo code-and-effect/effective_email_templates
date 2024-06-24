@@ -42,12 +42,22 @@ module EffectiveEmailTemplatesMailer
       end
     end
 
+    # Process body as plain text or html
+    body = merged.fetch(:body) || ''
+
     # For text/plain emails
-    return super(merged) if email_template.plain?
+    if email_template.plain?
+      stripped = body.strip
+
+      if stripped.starts_with?('<p>') || stripped.ends_with?('</p>')
+        raise("unexpected html content found when when rendering text/plain email_template #{action_name}")
+      end
+
+      return super(merged) 
+    end
 
     # For text/html emails
-    body = merged.fetch(:body)
-    layout = mailer_layout().presence || raise("expected a mailer layout when rendering text/html templates")
+    layout = mailer_layout().presence || raise("expected a mailer layout when rendering text/html email_template #{action_name}")
 
     super(merged.except(:body, :content_type)) do |format|
       format.text { strip_tags(body) }
