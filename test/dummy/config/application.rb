@@ -7,6 +7,7 @@ require "rails/all"
 Bundler.require(*Rails.groups)
 
 require 'devise'
+require 'haml'
 require "effective_test_bot"
 
 module Dummy
