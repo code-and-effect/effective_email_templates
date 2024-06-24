@@ -49,7 +49,7 @@ module EffectiveEmailTemplatesMailer
     if email_template.plain?
       stripped = body.strip
 
-      if body.starts_with?('<p>') || body.strip.ends_with?('</p>')
+      if stripped.starts_with?('<p>') || stripped.ends_with?('</p>')
         raise("unexpected html content found when when rendering text/plain email_template #{action_name}")
       end
 
