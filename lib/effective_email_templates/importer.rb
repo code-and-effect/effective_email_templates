@@ -24,10 +24,7 @@ module EffectiveEmailTemplates
           name = File.basename(filepath, '.liquid')
           email_template = Effective::EmailTemplate.find_or_initialize_by(template_name: name)
 
-          if email_template.persisted? && !overwrite
-            puts("SKIPPED #{filename(filepath)}") unless quiet
-            next
-          end
+          next if email_template.persisted? && !overwrite
 
           save(email_template, filepath, quiet: quiet)
         end
@@ -60,7 +57,10 @@ module EffectiveEmailTemplates
       email_template.assign_attributes(from: from)
       email_template.assign_attributes(body: body)
 
-      if email_template.save
+      # Save as plain or html
+      save_method = (EffectiveEmailTemplates.select_content_type ? :save_as_html! : :save!)
+
+      if (email_template.send(save_method) rescue false)
         puts("SUCCESS #{filename(filepath)}") unless quiet
       else
         puts "ERROR #{filename(filepath)}: #{email_template.errors.full_messages.to_sentence}"

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    effective_email_templates (1.8.0)
+    effective_email_templates (1.9.0)
       effective_bootstrap
       effective_datatables (>= 4.0.0)
       effective_resources

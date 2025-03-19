@@ -92,7 +92,16 @@ module Effective
 
     def save_as_html!
       assign_attributes(content_type: 'text/html')
-      assign_attributes(body: simple_format(body)) if body_plain?
+
+      if body_plain?
+        html = simple_format(body)
+        
+        # Replace [UpsideAMS](http://www.upsideams.com) type markdown links
+        html = html.gsub(/\[(.*?)\]\((.*?)\)/, '<a href="\2">\1</a>')
+
+        assign_attributes(body: html)
+      end
+
       save!
     end
 
