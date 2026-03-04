@@ -137,7 +137,7 @@ class EmailTemplatesTest < ActiveSupport::TestCase
 
     # HTML Part (from template)
     html = mail.parts.find { |part| part.content_type.start_with?('text/html') }
-    assert_equal "<!DOCTYPE html>\n<html style='background: #fff;'>\n<head>\n<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>\n</head>\n<body style='background: #fff;'>\n<p>Hey Test</p>\n</body>\n</html>\n", html.body.to_s
+    assert_equal "<!DOCTYPE html>\n<html>\n  <head>\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n    <style>\n      /* Email styles need to be inline */\n    </style>\n  </head>\n\n  <body>\n    <p>Hey Test</p>\n  </body>\n</html>\n", html.body.to_s
 
     # Plain Part (strip tags)
     plain = mail.parts.find { |part| part.content_type.start_with?('text/plain') }
