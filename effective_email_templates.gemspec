@@ -26,7 +26,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'devise'
   s.add_development_dependency 'haml-rails'
   s.add_development_dependency 'pry-byebug'
-  s.add_development_dependency 'psych'
   s.add_development_dependency 'wicked'
   s.add_development_dependency 'effective_test_bot'
   s.add_development_dependency 'effective_developer' # Optional but suggested
