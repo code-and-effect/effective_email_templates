@@ -1,21 +1,22 @@
 = effective_form_with(model: email_template, url: email_template.persisted? ? effective_email_templates.admin_email_template_path(email_template.id) : effective_email_templates.admin_email_templates_path) do |f|
-  = f.static_field :template_name, label: 'Name'
+  = card do
+    = f.static_field :template_name, label: 'Name'
 
-  - if EffectiveEmailTemplates.select_content_type
-    = f.select :content_type, Effective::EmailTemplate::CONTENT_TYPES
+    - if EffectiveEmailTemplates.select_content_type
+      = f.select :content_type, Effective::EmailTemplate::CONTENT_TYPES
 
-  = f.select :from, mailer_froms_collection(), hint: 'Please contact us to add additional sender addresses. Please refresh the page if this from address looks weird.'
-  = f.text_field :cc
-  = f.text_field :bcc
+    = f.select :from, mailer_froms_collection(), hint: 'Please contact us to add additional sender addresses. Please refresh the page if this from address looks weird.'
+    = f.text_field :cc
+    = f.text_field :bcc
 
-  - prefix_hint = EffectiveResources.mailer_subject_prefix_hint.to_s.strip.presence
-  = f.text_field :subject, hint: (prefix_hint ? "The subject of your email. It will be automatically prefixed with: #{prefix_hint}" : 'The subject of your email')
+    - prefix_hint = EffectiveResources.mailer_subject_prefix_hint.to_s.strip.presence
+    = f.text_field :subject, hint: (prefix_hint ? "The subject of your email. It will be automatically prefixed with: #{prefix_hint}" : 'The subject of your email')
 
-  = f.show_if(:content_type, Effective::EmailTemplate::CONTENT_TYPE_PLAIN) do
-    = f.text_area :body, hint: 'The text/plain content of your email template', rows: 10
-  
-  = f.show_if(:content_type, Effective::EmailTemplate::CONTENT_TYPE_HTML) do
-    = f.article_editor :body, hint: 'The text/html content of your email template', mode: :email
+    = f.show_if(:content_type, Effective::EmailTemplate::CONTENT_TYPE_PLAIN) do
+      = f.text_area :body, hint: 'The text/plain content of your email template', rows: 10
+
+    = f.show_if(:content_type, Effective::EmailTemplate::CONTENT_TYPE_HTML) do
+      = f.article_editor :body, hint: 'The text/html content of your email template', mode: :email
 
   = card do
     %p The available variables for this email template are:
