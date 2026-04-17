@@ -21,7 +21,7 @@ ActiveRecord::Schema[8.1].define(version: 101) do
     t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
   end
 
-  create_table "active_storage_attachments", id: :integer, default: nil, force: :cascade do |t|
+  create_table "active_storage_attachments", force: :cascade do |t|
     t.integer "blob_id", null: false
     t.datetime "created_at", precision: nil, null: false
     t.string "name", null: false
@@ -43,7 +43,7 @@ ActiveRecord::Schema[8.1].define(version: 101) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "active_storage_variant_records", id: :integer, default: nil, force: :cascade do |t|
+  create_table "active_storage_variant_records", force: :cascade do |t|
     t.integer "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
@@ -53,7 +53,6 @@ ActiveRecord::Schema[8.1].define(version: 101) do
     t.string "bcc"
     t.text "body"
     t.string "cc"
-    t.string "content_type"
     t.datetime "created_at", null: false
     t.string "from"
     t.string "subject"
