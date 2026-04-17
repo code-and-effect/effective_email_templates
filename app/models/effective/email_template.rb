@@ -25,6 +25,16 @@ module Effective
       self.from ||= EffectiveEmailTemplates.mailer_froms.first
     end
 
+    # Convert to HTML
+    before_validation(if: -> { body_plain? }) do
+      html = simple_format(body)
+
+      # Replace [UpsideAMS](http://www.upsideams.com) type markdown links
+      html = html.gsub(/\[(.*?)\]\((.*?)\)/, '<a href="\2">\1</a>')
+
+      assign_attributes(body: html)
+    end
+
     validates :body, liquid: true
     validates :subject, liquid: true
 
@@ -33,7 +43,7 @@ module Effective
     validates :body, presence: true
     validates :template_name, presence: true
 
-    validate(if: -> { html? && body.present? }) do
+    validate(if: -> { body.present? }) do
       errors.add(:body, 'expected html tags in body') if body_plain?
     end
 
@@ -67,19 +77,6 @@ module Effective
           [node.name, *node.lookups].join('.')
         end.visit
       end.flatten.uniq.compact
-    end
-
-    def save_as_html!
-      if body_plain?
-        html = simple_format(body)
-
-        # Replace [UpsideAMS](http://www.upsideams.com) type markdown links
-        html = html.gsub(/\[(.*?)\]\((.*?)\)/, '<a href="\2">\1</a>')
-
-        assign_attributes(body: html)
-      end
-
-      save!
     end
 
     private

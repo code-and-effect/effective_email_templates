@@ -57,7 +57,7 @@ module EffectiveEmailTemplates
       email_template.assign_attributes(from: from)
       email_template.assign_attributes(body: body)
 
-      if (email_template.save_as_html! rescue false)
+      if email_template.save
         puts("SUCCESS #{filename(filepath)}") unless quiet
       else
         puts "ERROR #{filename(filepath)}: #{email_template.errors.full_messages.to_sentence}"
