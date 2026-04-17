@@ -18,8 +18,6 @@ class EffectiveEmailTemplatesDatatable < Effective::Datatable
     col :subject
     col :body
 
-    col :content_type, visible: false
-
     actions_col
   end
 

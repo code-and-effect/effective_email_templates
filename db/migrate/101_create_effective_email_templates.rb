@@ -8,7 +8,6 @@ class CreateEffectiveEmailTemplates < ActiveRecord::Migration[6.0]
       t.string    :bcc
       t.string    :cc
 
-      t.string    :content_type
       t.text      :body
 
       t.timestamps
