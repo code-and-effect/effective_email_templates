@@ -82,11 +82,11 @@ module Effective
     private
 
     def template_body
-      Liquid::Template.parse(body)
+      (Liquid::Template.parse(body) rescue nil)
     end
 
     def template_subject
-      Liquid::Template.parse(subject)
+      (Liquid::Template.parse(subject) rescue nil)
     end
 
     def deep_stringify_assigns(assigns)
