@@ -35,6 +35,16 @@ module Effective
       assign_attributes(body: html)
     end
 
+    # A non-breaking space inside a Liquid tag - e.g. "{{ reason }}" pasted or round-tripped through
+    # a WYSIWYG editor as "{{ reason }}" - stops Liquid from parsing the variable, so it renders
+    # blank instead of its value. Normalize any &nbsp; entity or U+00A0 char that lands INSIDE a
+    # {{ }} / {% %} tag back to a regular space. Runs before the liquid validation so the cleaned
+    # value is what gets parsed, stored, and imported.
+    before_validation do
+      self.body = strip_liquid_nbsp(body)
+      self.subject = strip_liquid_nbsp(subject)
+    end
+
     validates :body, liquid: true
     validates :subject, liquid: true
 
@@ -57,6 +67,16 @@ module Effective
 
     def body_plain?
       body.present? && !(body.include?('</p>') || body.include?('</div>'))
+    end
+
+    LIQUID_TAG = /\{\{.*?\}\}|\{%.*?%\}/m
+    NBSP = /\u00A0|&nbsp;/
+
+    # Replace non-breaking spaces with regular spaces, but only INSIDE Liquid tags (where they break
+    # parsing). Intentional &nbsp; elsewhere in the template's HTML is left untouched.
+    def strip_liquid_nbsp(value)
+      return value if value.blank?
+      value.gsub(LIQUID_TAG) { |tag| tag.gsub(NBSP, ' ') }
     end
 
     def render(assigns = {})

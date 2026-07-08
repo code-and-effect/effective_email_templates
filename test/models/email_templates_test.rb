@@ -78,6 +78,26 @@ class EmailTemplatesTest < ActiveSupport::TestCase
     assert html.body.to_s.include?("<p>Hey #{user.first_name}</p>")
   end
 
+  test 'normalizes non-breaking spaces inside liquid tags on save' do
+    email_template = build_effective_email_template()
+
+    # A WYSIWYG editor round-trips "{{ user.first_name }}" into non-breaking spaces (entity or char),
+    # which stops Liquid from parsing the variable. Leave an intentional &nbsp; in the prose alone.
+    email_template.subject = 'Hi {{&nbsp;user.first_name&nbsp;}}'
+    email_template.body = "<p>Hi&nbsp;{{ user.first_name }}, welcome</p>"
+    email_template.save!
+    email_template.reload
+
+    # Inside the tags is cleaned; the prose &nbsp; is preserved
+    assert_equal 'Hi {{ user.first_name }}', email_template.subject
+    assert_equal '<p>Hi&nbsp;{{ user.first_name }}, welcome</p>', email_template.body
+
+    # And it renders the variable now instead of blank
+    rendered = email_template.render('user' => { 'first_name' => 'Sam' })
+    assert_equal 'Hi Sam', rendered[:subject]
+    assert rendered[:body].include?('Hi&nbsp;Sam, welcome')
+  end
+
   test 'save_as_html! with br' do
     email_template = build_effective_email_template()
     email_template.update!(body: "Welcome {{ user.first_name }} {{ user.last_name }}\r\nHave a great day!")
